@@ -1,0 +1,1327 @@
+﻿using ShibaGTTemplate.Utilities;
+using Photon.Pun;   
+using Photon.Realtime;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Object = UnityEngine.Object;
+using ExitGames.Client.Photon;
+using UnityEngine;
+using System.Text;
+using System.Threading.Tasks;
+using ShibaGTTemplate.UI;
+using GorillaNetworking;
+using dark.efijiPOIWikjek;
+using GorillaLocomotion.Gameplay;
+using GorillaExtensions;
+using Steamworks;
+using HarmonyLib;
+using System.Reflection;
+using GorillaTag;
+using static UnityEngine.UI.GridLayoutGroup;
+using Photon.Pun.UtilityScripts;
+using System.IO;
+using static MonoMod.Cil.RuntimeILReferenceBag.FastDelegateInvokers;
+using Oculus.Interaction.HandGrab;
+using UnityEngine.AI;
+using UnityEngine.Animations.Rigging;
+using GorillaTagScripts;
+using UnityEngine.XR.Interaction.Toolkit;
+using Photon.Voice.Unity;
+using System.ComponentModel;
+using UnityEngine.UIElements;
+using OVRSimpleJSON;
+using GTAG_NotificationLib;
+using System.Threading;
+using UnityEngine.XR;
+using UnityEngine.InputSystem.HID;
+using System.Runtime.InteropServices;
+using TMPro;
+using Random = UnityEngine.Random;
+using UnityEngine.UI;
+using UnityEngine.InputSystem;
+
+namespace ShibaGTTemplate.Backend
+{
+    internal class Mods : MonoBehaviour
+    {
+        public static bool oiwefkwenfjk;
+
+        public static void HeadSpin()
+        {
+            RigShit.GetOwnVRRig().head.trackingRotationOffset.y += 15f;
+        }
+
+        public static void nuhuhheadspin()
+        {
+            RigShit.GetOwnVRRig().head.trackingRotationOffset.y = 0.0f;
+
+        }
+
+        public static bool inSettings = false;
+
+        public static void Settings()
+        {
+            WristMenu.settingsbuttons[0].enabled = false;
+            WristMenu.buttons[0].enabled = false;
+            inSettings = !inSettings;
+            WristMenu.DestroyMenu();
+            WristMenu.instance.Draw();
+        }
+
+        public static bool invisplat = false;
+        public static bool stickyplatforms = false;
+        public static GameObject funn;
+        public static bool fpcc;
+
+        public static void Platforms()
+        {
+            PlatformsThing(invisplat, stickyplatforms);
+        }
+
+        public static void InvisPlatforms()
+        {
+            PlatformsThing(true, false);
+        }
+
+        public static void StickyPlatforms()
+        {
+            PlatformsThing(false, true);
+        }
+
+        public static void Ghost()
+        {
+            bool rightControllerSecondaryButton = ControllerInputPoller.instance.rightControllerSecondaryButton;
+            if (rightControllerSecondaryButton)
+            {
+                GorillaTagger.Instance.offlineVRRig.enabled = false;
+                GameObject gameObject = GameObject.CreatePrimitive(0);
+                UnityEngine.Object.Destroy(gameObject.GetComponent<Rigidbody>());
+                UnityEngine.Object.Destroy(gameObject.GetComponent<SphereCollider>());
+                gameObject.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                gameObject.transform.position = GorillaTagger.Instance.rightHandTransform.position;
+                gameObject.GetComponent<Renderer>().material.color = new Color32(255, 168, 255, 1);
+                GameObject gameObject2 = GameObject.CreatePrimitive(0);
+                UnityEngine.Object.Destroy(gameObject2.GetComponent<Rigidbody>());
+                UnityEngine.Object.Destroy(gameObject2.GetComponent<SphereCollider>());
+                gameObject2.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                gameObject2.transform.position = GorillaTagger.Instance.leftHandTransform.position;
+                gameObject2.GetComponent<Renderer>().material.color = new Color32(255, 168, 255, 1);
+                UnityEngine.Object.Destroy(gameObject, Time.deltaTime);
+                UnityEngine.Object.Destroy(gameObject2, Time.deltaTime);
+            }
+            else
+            {
+                GorillaTagger.Instance.offlineVRRig.enabled = true;
+
+            }
+        }
+
+        public static void Invisible()
+        {
+            if (ControllerInputPoller.instance.rightControllerPrimaryButton || ControllerInputPoller.instance.leftControllerPrimaryButton)
+            {
+                GorillaTagger.Instance.offlineVRRig.headBodyOffset = new Vector3(999f, 999f, 999f);
+                GameObject righth = GameObject.CreatePrimitive(0);
+                GameObject lefth = GameObject.CreatePrimitive(0);
+
+                Object.Destroy(righth.GetComponent<Rigidbody>());
+                Object.Destroy(righth.GetComponent<SphereCollider>());
+                Object.Destroy(lefth.GetComponent<Rigidbody>());
+                Object.Destroy(lefth.GetComponent<SphereCollider>());
+
+                righth.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                lefth.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+
+                righth.transform.position = GorillaTagger.Instance.rightHandTransform.position;
+                lefth.transform.position = GorillaTagger.Instance.leftHandTransform.position;
+                righth.GetComponent<Renderer>().material.color = new Color32(50, 50, 50, 255);
+                lefth.GetComponent<Renderer>().material.color = new Color32(50, 50, 50, 255);
+
+                Object.Destroy(righth, Time.deltaTime);
+                Object.Destroy(lefth, Time.deltaTime);
+            }
+            else
+            {
+                GorillaTagger.Instance.offlineVRRig.headBodyOffset = Vector3.zero;
+            }
+            //RigShit.rigpatcher();
+            Backend.GhostPatch.Prefix(GorillaTagger.Instance.offlineVRRig);
+        }
+
+        public static void AttempsToActivateAndUseStick()
+        {
+
+        }
+
+        public static void AttempsToActivateAndUseFingerPainter()
+        {
+
+        }
+
+        //Animal Mods
+        public static void AnimalOwnership()
+        {
+            GameObject.Find("Floating Bug Holdable").GetComponent<ThrowableBug>().WorldShareableRequestOwnership();
+
+            GameObject.Find("Cave Bat Holdable").GetComponent<ThrowableBug>().WorldShareableRequestOwnership();
+        }
+
+        //Seperate from ownership
+        public static void BatGun()
+        {
+            if (ControllerInputPoller.instance.rightGrab)
+            {
+                Physics.Raycast(GorillaLocomotion.Player.Instance.rightControllerTransform.position, -GorillaLocomotion.Player.Instance.rightControllerTransform.up, out var hitInfo);
+                pointer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                pointer.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                pointer.GetComponent<Renderer>().material.color = Color.white;
+                pointer.transform.position = hitInfo.point;
+                GameObject.Destroy(pointer.GetComponent<BoxCollider>());
+                GameObject.Destroy(pointer.GetComponent<Rigidbody>());
+                GameObject.Destroy(pointer.GetComponent<Collider>());
+                if (ControllerInputPoller.instance.rightControllerIndexFloat >= 0.3f)
+                {
+                    GameObject.Find("Cave Bat Holdable").transform.position = pointer.transform.position;
+                }
+            }
+            if (pointer != null)
+            {
+                GameObject.Destroy(pointer, Time.deltaTime);
+            }
+        }
+
+
+
+        public static void Grabbug()
+        {
+            if (ControllerInputPoller.instance.rightGrab)
+            {
+                GameObject.Find("Floating Bug Holdable").transform.position = GorillaLocomotion.Player.Instance.rightControllerTransform.position;
+            }
+
+        }
+
+        public static void Grabbat()
+        {
+            if (ControllerInputPoller.instance.rightGrab)
+            {
+                GameObject.Find("Cave Bat Holdable").transform.position = GorillaLocomotion.Player.Instance.rightControllerTransform.position;
+            }
+
+        }
+
+        public static void BugGun()
+        {
+            if (ControllerInputPoller.instance.rightGrab)
+            {
+                Physics.Raycast(GorillaLocomotion.Player.Instance.rightControllerTransform.position, -GorillaLocomotion.Player.Instance.rightControllerTransform.up, out var hitInfo);
+                pointer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                pointer.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                pointer.GetComponent<Renderer>().material.color = Color.white;
+                pointer.transform.position = hitInfo.point;
+                GameObject.Destroy(pointer.GetComponent<BoxCollider>());
+                GameObject.Destroy(pointer.GetComponent<Rigidbody>());
+                GameObject.Destroy(pointer.GetComponent<Collider>());
+                if (ControllerInputPoller.instance.rightControllerIndexFloat >= 0.3f)
+                {
+                    GameObject.Find("Floating Bug Holdable").transform.position = pointer.transform.position;
+                }
+            }
+            if (pointer != null)
+            {
+                GameObject.Destroy(pointer, Time.deltaTime);
+            }
+        }
+
+
+
+        //End
+
+        public static void KickGunNOTSTUMP()
+        {
+            if (ControllerInputPoller.instance.rightGrab)
+            {
+                Physics.Raycast(GorillaLocomotion.Player.Instance.rightControllerTransform.position, -GorillaLocomotion.Player.Instance.rightControllerTransform.up, out var hitInfo);
+                pointer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                pointer.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                pointer.GetComponent<Renderer>().material.shader = Shader.Find("GorillaTag/UberShader");
+                pointer.GetComponent<Renderer>().material.color = Color.white;
+                pointer.transform.position = hitInfo.point;
+                GameObject.Destroy(pointer.GetComponent<BoxCollider>());
+                GameObject.Destroy(pointer.GetComponent<Rigidbody>());
+                GameObject.Destroy(pointer.GetComponent<Collider>());
+                if (ControllerInputPoller.instance.rightControllerIndexFloat >= 0.3f)
+                {
+
+                    pointer.GetComponent<Renderer>().material.color = Color.red;
+                    PhotonNetwork.SetMasterClient(PhotonNetwork.LocalPlayer);
+                }
+                else
+                {
+                }
+            }
+            if (pointer != null)
+            {
+                GameObject.Destroy(pointer, Time.deltaTime);
+            }
+        }
+
+        public static void SlothFly()
+        {
+            if (ControllerInputPoller.instance.rightControllerSecondaryButton)
+            {
+                GorillaLocomotion.Player.Instance.transform.position += (GorillaLocomotion.Player.Instance.headCollider.transform.forward * Time.deltaTime) * 2;
+                GorillaLocomotion.Player.Instance.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            }
+        }
+
+        public static void Fly()
+        {
+            if (ControllerInputPoller.instance.rightControllerSecondaryButton)
+            {
+                GorillaLocomotion.Player.Instance.transform.position += (GorillaLocomotion.Player.Instance.headCollider.transform.forward * Time.deltaTime) * 15;
+                GorillaLocomotion.Player.Instance.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            }
+        }
+        public static void FastFly()
+        {
+            bool rightControllerSecondaryButton = ControllerInputPoller.instance.rightControllerSecondaryButton;
+            if (rightControllerSecondaryButton)
+            {
+                GorillaLocomotion.Player.Instance.transform.position += GorillaLocomotion.Player.Instance.headCollider.transform.forward * Time.deltaTime * 35.5f;
+                GorillaLocomotion.Player.Instance.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            }
+        }
+
+        public static void FlyNoclip()
+        {
+            if (ControllerInputPoller.instance.rightControllerSecondaryButton)
+            {
+                GorillaLocomotion.Player.Instance.transform.position += GorillaLocomotion.Player.Instance.headCollider.transform.forward * Time.deltaTime * 13f;
+                GorillaLocomotion.Player.Instance.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                foreach (MeshCollider meshCollider in Resources.FindObjectsOfTypeAll<MeshCollider>())
+                {
+                    meshCollider.enabled = false;
+                }
+            }
+            else
+            {
+                foreach (MeshCollider meshCollider2 in Resources.FindObjectsOfTypeAll<MeshCollider>())
+                {
+                    meshCollider2.enabled = true;
+                }
+            }
+        }
+
+        public static void GoodTPGUN() //Made By Zapz (Discord=♪-♪)
+        {
+            if (WristMenu.gripDownR)
+            {
+                {
+                    //Sphere Hit Area
+                    RaycastHit raycastHit;
+                    Physics.Raycast(GorillaLocomotion.Player.Instance.rightControllerTransform.transform.position, GorillaLocomotion.Player.Instance.rightControllerTransform.transform.forward, out raycastHit);
+                    GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    gameObject.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                    gameObject.transform.position = raycastHit.point;
+                    Object.Destroy(gameObject.GetComponent<BoxCollider>());
+                    Object.Destroy(gameObject.GetComponent<Rigidbody>());
+                    Object.Destroy(gameObject.GetComponent<Collider>());
+                    Object.Destroy(gameObject, Time.deltaTime);
+                    //Line
+                    GameObject line = new GameObject("Line");
+                    LineRenderer liner = line.AddComponent<LineRenderer>();
+                    UnityEngine.Color thecolor = Color.white;
+                    liner.startColor = thecolor; liner.endColor = thecolor; liner.startWidth = 0.025f; liner.endWidth = 0.025f; liner.positionCount = 2; liner.useWorldSpace = true;
+                    liner.SetPosition(0, raycastHit.point);
+                    liner.SetPosition(1, GorillaTagger.Instance.rightHandTransform.position);
+                    liner.material.shader = Shader.Find("GUI/Text Shader");
+                    UnityEngine.Object.Destroy(line, Time.deltaTime);
+                    if (WristMenu.triggerDownR)
+                    {
+                        GorillaLocomotion.Player.Instance.transform.position = gameObject.transform.position;
+                        GorillaLocomotion.Player.Instance.GetComponent<Rigidbody>().velocity = gameObject.transform.position;
+                    }
+                }
+            }
+        }
+
+        public static void IronMonke()
+        {
+            if (WristMenu.gripDownR)
+            {
+                GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(115, false, 0.1f);
+                GorillaTagger.Instance.StartVibration(false, GorillaTagger.Instance.tapHapticStrength / 10f, GorillaTagger.Instance.tapHapticDuration);
+                GorillaLocomotion.Player.Instance.GetComponent<Rigidbody>().AddForce(new Vector3(15f * GorillaLocomotion.Player.Instance.rightControllerTransform.right.x, 15f * GorillaLocomotion.Player.Instance.rightControllerTransform.right.y, 15f * GorillaLocomotion.Player.Instance.rightControllerTransform.right.z), ForceMode.Acceleration);
+            }
+            if (WristMenu.gripDownL)
+            {
+                GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(115, true, 0.1f);
+                GorillaTagger.Instance.StartVibration(true, GorillaTagger.Instance.tapHapticStrength / 10f, GorillaTagger.Instance.tapHapticDuration);
+                GorillaLocomotion.Player.Instance.GetComponent<Rigidbody>().AddForce(new Vector3(15f * GorillaLocomotion.Player.Instance.leftControllerTransform.right.x * -1f, 15f * GorillaLocomotion.Player.Instance.leftControllerTransform.right.y * -1f, 15f * GorillaLocomotion.Player.Instance.leftControllerTransform.right.z * -1f), ForceMode.Acceleration);
+            }
+        }
+
+        public static void JoinCodeBotByJaxFixed()
+        {
+            PhotonNetwork.JoinRoom("4949");
+        }
+
+        public static void StickLongArms()
+        {
+            GorillaLocomotion.Player.Instance.leftControllerTransform.transform.position = GorillaTagger.Instance.leftHandTransform.position + GorillaTagger.Instance.leftHandTransform.forward * 0.333f;
+            GorillaLocomotion.Player.Instance.rightControllerTransform.transform.position = GorillaTagger.Instance.rightHandTransform.position + GorillaTagger.Instance.rightHandTransform.forward * 0.333f;
+        }
+
+        public static void FixHandTaps()
+        {
+            GorillaTagger.Instance.handTapVolume = 0.1f;
+        }
+
+        public static void LoudHandTaps()
+        {
+            GorillaTagger.Instance.handTapVolume = int.MaxValue;
+        }
+
+        public static void SilentHandTaps()
+        {
+            GorillaTagger.Instance.handTapVolume = 0;
+        }
+
+        public static void EnableInstantHandTaps()
+        {
+            GorillaTagger.Instance.tapCoolDown = 0f;
+        }
+
+        public static void DisableInstantHandTaps()
+        {
+            GorillaTagger.Instance.tapCoolDown = 0.33f;
+        }
+
+        public static void SpinHeadZ()
+        {
+            VRMap head = GorillaTagger.Instance.offlineVRRig.head;
+            head.trackingRotationOffset.z = head.trackingRotationOffset.z + 10f;
+        }
+
+        public static void SpinHeadY()
+        {
+            VRMap head = GorillaTagger.Instance.offlineVRRig.head;
+            head.trackingRotationOffset.y = head.trackingRotationOffset.y + 10f;
+        }
+
+        public static void SpinHeadX()
+        {
+            VRMap head = GorillaTagger.Instance.offlineVRRig.head;
+            head.trackingRotationOffset.x = head.trackingRotationOffset.x + 10f;
+        }
+
+
+
+        public static void FixHead()
+        {
+            GorillaTagger.Instance.offlineVRRig.head.trackingRotationOffset.x = 0f;
+            GorillaTagger.Instance.offlineVRRig.head.trackingRotationOffset.y = 0f;
+            GorillaTagger.Instance.offlineVRRig.head.trackingRotationOffset.z = 0f;
+        }
+
+        public static void FlipHands()
+        {
+            Vector3 lh = GorillaTagger.Instance.leftHandTransform.position;
+            Vector3 rh = GorillaTagger.Instance.rightHandTransform.position;
+            Quaternion lhr = GorillaTagger.Instance.leftHandTransform.rotation;
+            Quaternion rhr = GorillaTagger.Instance.rightHandTransform.rotation;
+
+            GorillaLocomotion.Player.Instance.rightControllerTransform.transform.position = lh;
+            GorillaLocomotion.Player.Instance.leftControllerTransform.transform.position = rh;
+
+            GorillaLocomotion.Player.Instance.rightControllerTransform.transform.rotation = lhr;
+            GorillaLocomotion.Player.Instance.leftControllerTransform.transform.rotation = rhr;
+        }
+
+        public static void EnableFPSBoost()
+        {
+            QualitySettings.globalTextureMipmapLimit = 99999;
+        }
+
+        public static void DisableFPSBoost()
+        {
+            QualitySettings.globalTextureMipmapLimit = 1;
+        }
+
+        public static void NightTime()
+        {
+            BetterDayNightManager.instance.SetTimeOfDay(0);
+        }
+
+        public static void DayTime()
+        {
+            BetterDayNightManager.instance.SetTimeOfDay(1);
+        }
+
+        public static void ShinyRocks()
+        {
+            if (ControllerInputPoller.instance.rightControllerPrimaryButton)
+            {
+                CosmeticsController.instance.numShinyRocksToBuy = 9999999;
+                CosmeticsController.instance.currencyBalance = 9999999;
+            }
+        }
+
+        public static bool casual = false;
+        public static bool fected = false;
+        public static bool ifDisabled = true;
+
+        public static GameObject AntireportBlock = null;
+        public static void AntiReport()
+        {
+            GorillaScoreBoard[] ScoreBoard = GameObject.FindObjectsOfType<GorillaScoreBoard>();
+            if (AntireportBlock == null)
+            {
+                foreach (GorillaScoreBoard boardObject in ScoreBoard)
+                {
+                    AntireportBlock = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    AntireportBlock.transform.localScale = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+                    AntireportBlock.transform.position = boardObject.transform.position;
+                    AntireportBlock.transform.rotation = boardObject.transform.rotation;
+                    Object.Destroy(AntireportBlock.GetComponent<BoxCollider>());
+                }
+            }
+            foreach (VRRig i in GorillaParent.instance.vrrigs)
+            {
+                if (i != GorillaTagger.Instance.offlineVRRig && Vector3.Distance(i.transform.position, AntireportBlock.transform.position) < 1.7f)
+                {
+                    PhotonNetwork.Disconnect();
+                    NotifiLib.SendNotification("Somebody attempted to report you, you've been disconnected.");
+                }
+            }
+        }
+
+        public static void GliderPosition(Vector3 position)
+        {
+            int i = UnityEngine.Random.Range(0, Gliders.Length);
+            GameObject.Find(Gliders[i]).GetComponent<GliderHoldable>().transform.position = position;
+        }
+
+        public static void GliderGun()
+        {
+            if (ControllerInputPoller.instance.rightGrab)
+            {
+                Physics.Raycast(GorillaLocomotion.Player.Instance.rightControllerTransform.position, -GorillaLocomotion.Player.Instance.rightControllerTransform.up, out var hitInfo);
+                pointer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                pointer.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                pointer.GetComponent<Renderer>().material.color = Color.white;
+                pointer.transform.position = hitInfo.point;
+                GameObject.Destroy(pointer.GetComponent<BoxCollider>());
+                GameObject.Destroy(pointer.GetComponent<Rigidbody>());
+                GameObject.Destroy(pointer.GetComponent<Collider>());
+                if (ControllerInputPoller.instance.rightControllerIndexFloat >= 0.3f)
+                {
+                    GameObject.Find("GliderHoldable").transform.position = pointer.transform.position;
+                }
+            }
+            if (pointer != null)
+            {
+                GameObject.Destroy(pointer, Time.deltaTime);
+            }
+        }
+
+        public static string[] Gliders = new string[]
+        {
+            "Environment Objects/PersistentObjects_Prefab/Gliders_Placement_Prefab/Root/LeafGliderFunctional/GliderHoldable",
+            "Environment Objects/PersistentObjects_Prefab/Gliders_Placement_Prefab/Root/LeafGliderFunctional (1)/GliderHoldable",
+            "Environment Objects/PersistentObjects_Prefab/Gliders_Placement_Prefab/Root/LeafGliderFunctional (4)/GliderHoldable",
+            "Environment Objects/PersistentObjects_Prefab/Gliders_Placement_Prefab/Root/LeafGliderFunctional (5)/GliderHoldable",
+            "Environment Objects/PersistentObjects_Prefab/Gliders_Placement_Prefab/Root/LeafGliderFunctional (6)/GliderHoldable",
+            "Environment Objects/PersistentObjects_Prefab/Gliders_Placement_Prefab/Root/LeafGliderFunctional (7)/GliderHoldable",
+            "Environment Objects/PersistentObjects_Prefab/Gliders_Placement_Prefab/Root/LeafGliderFunctional (8)/GliderHoldable",
+            "Environment Objects/PersistentObjects_Prefab/Gliders_Placement_Prefab/Root/LeafGliderFunctional (9)/GliderHoldable",
+            "Environment Objects/PersistentObjects_Prefab/Gliders_Placement_Prefab/Root/LeafGliderFunctional (10)/GliderHoldable",
+            "Environment Objects/PersistentObjects_Prefab/Gliders_Placement_Prefab/Root/LeafGliderFunctional (11)/GliderHoldable",
+            "Environment Objects/PersistentObjects_Prefab/Gliders_Placement_Prefab/Root/LeafGliderFunctional (12)/GliderHoldable",
+            "Environment Objects/PersistentObjects_Prefab/Gliders_Placement_Prefab/Root/LeafGliderFunctional (17)/GliderHoldable",
+            "Environment Objects/PersistentObjects_Prefab/Gliders_Placement_Prefab/Root/LeafGliderFunctional (18)/GliderHoldable",
+            "Environment Objects/PersistentObjects_Prefab/Gliders_Placement_Prefab/Root/LeafGliderFunctional (19)/GliderHoldable",
+            "Environment Objects/PersistentObjects_Prefab/Gliders_Placement_Prefab/Root/LeafGliderFunctional (20)/GliderHoldable",
+            "Environment Objects/PersistentObjects_Prefab/Gliders_Placement_Prefab/Root/LeafGliderFunctional (21)/GliderHoldable",
+            "Environment Objects/PersistentObjects_Prefab/Gliders_Placement_Prefab/Root/LeafGliderFunctional (23)/GliderHoldable",
+            "Environment Objects/PersistentObjects_Prefab/Gliders_Placement_Prefab/Root/LeafGliderFunctional (24)/GliderHoldable",
+        };
+
+        public static void BreakCloudsMap()
+        {
+            List<GameObject> gameObjects = new List<GameObject>();
+
+            // All the gliders
+
+            gameObjects.Add(GameObject.Find("GliderHoldable"));
+            gameObjects.Add(GameObject.Find("LeafGliderFunctional (1)/GliderHoldable"));
+            gameObjects.Add(GameObject.Find("LeafGliderFunctional (4)/GliderHoldable"));
+            gameObjects.Add(GameObject.Find("LeafGliderFunctional (5)/GliderHoldable"));
+            gameObjects.Add(GameObject.Find("LeafGliderFunctional (7)/GliderHoldable"));
+            gameObjects.Add(GameObject.Find("LeafGliderFunctional (8)/GliderHoldable"));
+            gameObjects.Add(GameObject.Find("LeafGliderFunctional (9)/GliderHoldable"));
+            gameObjects.Add(GameObject.Find("LeafGliderFunctional (10)/GliderHoldable"));
+            gameObjects.Add(GameObject.Find("LeafGliderFunctional (11)/GliderHoldable"));
+            gameObjects.Add(GameObject.Find("LeafGliderFunctional (12)/GliderHoldable"));
+            gameObjects.Add(GameObject.Find("LeafGliderFunctional (17)/GliderHoldable"));
+            gameObjects.Add(GameObject.Find("LeafGliderFunctional (19)/GliderHoldable"));
+            gameObjects.Add(GameObject.Find("LeafGliderFunctional (20)/GliderHoldable"));
+            gameObjects.Add(GameObject.Find("LeafGliderFunctional (21)/GliderHoldable"));
+            gameObjects.Add(GameObject.Find("LeafGliderFunctional (23)/GliderHoldable"));
+            gameObjects.Add(GameObject.Find("LeafGliderFunctional (24)/GliderHoldable"));
+
+            //end of the gliders
+            List<VRRig> vrrigs = new List<VRRig>();
+            foreach (VRRig rig in GorillaParent.instance.vrrigs)
+            {
+                vrrigs.Add(rig);
+            }
+            vrrigs = vrrigs.OrderBy(x => UnityEngine.Random.value).ToList();
+            for (int i = 0; i < gameObjects.Count; i++)
+            {
+                TeleportGameObjectToPlayer(gameObjects[i], vrrigs[i % vrrigs.Count]);
+            }
+        }
+        public static void AcidSelf()
+        {
+            bool flag = ! Mods.AcidEnabled;
+            if (flag)
+            {
+                Mods.AcidPlayer(PhotonNetwork.LocalPlayer);
+                Mods.AcidEnabled = true;
+            }
+            else
+            {
+                Mods.RemoveAcidPlayer(PhotonNetwork.LocalPlayer);
+                Mods.AcidEnabled = false;
+            }
+        }
+
+        public static void AcidAll()
+        {
+            int countOfPlayers = PhotonNetwork.CountOfPlayers;
+            bool flag = !Mods.AcidAllEnabled;
+            if (flag)
+            {
+                int num = PhotonNetwork.PlayerList.Length;
+                Traverse.Create(ScienceExperimentManager.instance).Field("inGamePlayerCount").SetValue(num);
+                ScienceExperimentManager.PlayerGameState[] array = new ScienceExperimentManager.PlayerGameState[num];
+                for (int i = 0; i < num; i++)
+                {
+                    ScienceExperimentManager.PlayerGameState playerGameState = default(ScienceExperimentManager.PlayerGameState);
+                    playerGameState.touchedLiquid = true;
+                    playerGameState.playerId = ((PhotonNetwork.PlayerList[i] == null) ? 0 : PhotonNetwork.PlayerList[i].ActorNumber);
+                    array[i] = playerGameState;
+                }
+                Traverse.Create(ScienceExperimentManager.instance).Field("inGamePlayerStates").SetValue(array);
+                Mods.AcidAllEnabled = true;
+            }
+            else
+            {
+                int num2 = PhotonNetwork.PlayerList.Length;
+                Traverse.Create(ScienceExperimentManager.instance).Field("inGamePlayerCount").SetValue(num2);
+                ScienceExperimentManager.PlayerGameState[] array2 = new ScienceExperimentManager.PlayerGameState[num2];
+                for (int j = 0; j < num2; j++)
+                {
+                    ScienceExperimentManager.PlayerGameState playerGameState2 = default(ScienceExperimentManager.PlayerGameState);
+                    playerGameState2.touchedLiquid = false;
+                    playerGameState2.playerId = ((PhotonNetwork.PlayerList[j] == null) ? 0 : PhotonNetwork.PlayerList[j].ActorNumber);
+                    array2[j] = playerGameState2;
+                }
+                Traverse.Create(ScienceExperimentManager.instance).Field("inGamePlayerStates").SetValue(array2);
+                Mods.AcidAllEnabled = false;
+            }
+        }
+
+        public static bool AcidAllEnabled = false;
+        public static bool AcidEnabled = false;
+
+        public static void AcidPlayer(Player player)
+        {
+            bool inRoom = PhotonNetwork.InRoom;
+            if (inRoom)
+            {
+                int countOfPlayers = PhotonNetwork.CountOfPlayers;
+                Traverse.Create(ScienceExperimentManager.instance).Field("inGamePlayerCount").SetValue(countOfPlayers);
+                ScienceExperimentManager.PlayerGameState[] array = new ScienceExperimentManager.PlayerGameState[countOfPlayers];
+                for (int i = 0; i < countOfPlayers; i++)
+                {
+                    ScienceExperimentManager.PlayerGameState playerGameState = default(ScienceExperimentManager.PlayerGameState);
+                    playerGameState.touchedLiquid = true;
+                    playerGameState.playerId = ((player != null) ? player.ActorNumber : 0);
+                    array[i] = playerGameState;
+                }
+                Traverse.Create(ScienceExperimentManager.instance).Field("inGamePlayerStates").SetValue(array);
+            }
+        }
+
+        public static void RemoveAcidPlayer(Player player)
+        {
+            bool inRoom = PhotonNetwork.InRoom;
+            if (inRoom)
+            {
+                int countOfPlayers = PhotonNetwork.CountOfPlayers;
+                Traverse.Create(ScienceExperimentManager.instance).Field("inGamePlayerCount").SetValue(countOfPlayers);
+                ScienceExperimentManager.PlayerGameState[] array = new ScienceExperimentManager.PlayerGameState[countOfPlayers];
+                for (int i = 0; i < countOfPlayers; i++)
+                {
+                    ScienceExperimentManager.PlayerGameState playerGameState = default(ScienceExperimentManager.PlayerGameState);
+                    playerGameState.touchedLiquid = false;
+                    playerGameState.playerId = ((player != null) ? player.ActorNumber : 0);
+                    array[i] = playerGameState;
+                }
+                Traverse.Create(ScienceExperimentManager.instance).Field("inGamePlayerStates").SetValue(array);
+            }
+        }
+
+        public static void InfectSelf()
+        {
+            Object.FindObjectOfType<GorillaTagManager>().AddInfectedPlayer(PhotonNetwork.LocalPlayer);
+        }
+
+        // Token: 0x060000DD RID: 221 RVA: 0x0000948C File Offset: 0x0000768C
+        public static void InfectSpamAll()
+        {
+            Player randomPlayer =   Mods.GetRandomPlayer(true);
+            bool flag = Mods.GetVRRigFromPlayer(randomPlayer).mainSkin.material.name.Contains("fected");
+            if (flag)
+            {
+                Object.FindObjectOfType<GorillaTagManager>().currentInfected.Remove(randomPlayer);
+            }
+            else
+            {
+                Object.FindObjectOfType<GorillaTagManager>().AddInfectedPlayer(randomPlayer);
+            }
+        }
+
+        public static void TagAura()
+        {
+            float num = 4f;
+            VRRig vrrig = null;
+            foreach (VRRig vrrig2 in GorillaParent.instance.vrrigs)
+            {
+                bool flag = GorillaTagger.Instance.offlineVRRig.mainSkin.material.name.Contains("fected") && vrrig2 != GorillaTagger.Instance.offlineVRRig && Vector3.Distance(GorillaTagger.Instance.bodyCollider.transform.position, vrrig2.transform.position) < num && !vrrig2.mainSkin.material.name.Contains("fected");
+                if (flag)
+                {
+                    num = Vector3.Distance(GorillaTagger.Instance.bodyCollider.transform.position, vrrig2.transform.position) * 4f;
+                    vrrig = vrrig2;
+                }
+            }
+            GorillaTagger.Instance.leftHandTransform.position = vrrig.transform.position;
+            GorillaTagger.Instance.rightHandTransform.position = vrrig.transform.position;
+        }
+
+        // Token: 0x0400003D RID: 61
+        public static bool AllowedToGhost = true;
+
+        // Token: 0x0400003E RID: 62
+        public static bool AllowedToInvis = true;
+
+        // Token: 0x0400003F RID: 63
+        public static GameObject gameObject = null;
+
+        // Token: 0x04000040 RID: 64
+        public static GameObject checkPoint = null;
+
+        // Token: 0x04000041 RID: 65
+        public static bool IsHolding = false;
+
+        // Token: 0x04000042 RID: 66
+        public static bool doneDid = false;
+
+        // Token: 0x04000043 RID: 67
+        public static VRRig ghostRig = null;
+
+        // Token: 0x04000044 RID: 68
+        private static GameObject bug = GameObject.Find("Floating Bug Holdable");
+
+        // Token: 0x04000045 RID: 69
+        private static GameObject bat = GameObject.Find("Cave Bat Holdable");
+
+        // Token: 0x04000046 RID: 70
+        public static string info = "[<color=yellow>Rift</color>]";
+
+        public static VRRig GetVRRigFromPlayer(Player p)
+        {
+            return GorillaGameManager.instance.FindPlayerVRRig(p);
+        }
+
+        public static Player GetRandomPlayer(bool includeSelf)
+        {
+            Player result;
+            if (includeSelf)
+            {
+                result = PhotonNetwork.PlayerList[Random.Range(0, PhotonNetwork.PlayerList.Length - 1)];
+            }
+            else
+            {
+                result = PhotonNetwork.PlayerListOthers[Random.Range(0, PhotonNetwork.PlayerListOthers.Length - 1)];
+            }
+            return result;
+        }
+
+        // Token: 0x060000DE RID: 222 RVA: 0x000094E8 File Offset: 0x000076E8
+        public static void InfectAll()
+        {
+            bool flag = PhotonNetwork.InRoom || PhotonNetwork.InLobby;
+            if (flag)
+            {
+                bool isMasterClient = PhotonNetwork.IsMasterClient;
+                if (isMasterClient)
+                {
+                    foreach (Player player in PhotonNetwork.PlayerListOthers)
+                    {
+                        Object.FindAnyObjectByType<GorillaTagManager>().currentInfected.Add(player);
+                    }
+                }
+                else
+                {
+                    foreach (VRRig vrrig in GorillaParent.instance.vrrigs)
+                    {
+                        bool flag2 = vrrig != GorillaTagger.Instance.offlineVRRig;
+                        if (flag2)
+                        {
+                            bool flag3 = !vrrig.mainSkin.material.name.Contains("fected") && GorillaTagger.Instance.offlineVRRig.mainSkin.material.name.Contains("fected");
+                            if (flag3)
+                            {
+                                GorillaTagger.Instance.offlineVRRig.enabled = false;
+                                GorillaTagger.Instance.offlineVRRig.transform.position = vrrig.transform.position + new Vector3(0f, 1f, 0f);
+                                GorillaTagger.Instance.myVRRig.transform.position = vrrig.transform.position + new Vector3(0f, 1f, 0f);
+                                GorillaTagger.Instance.leftHandTransform.transform.position = vrrig.transform.position;
+                                GorillaTagger.Instance.rightHandTransform.transform.position = vrrig.transform.position;
+                            }
+                            else
+                            {
+                                GorillaTagger.Instance.offlineVRRig.enabled = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        private static void TeleportGameObjectToPlayer(GameObject gameObject, VRRig player)
+        {
+            gameObject.transform.position = player.transform.position;
+        }
+
+        public static void ChamsRemastered()
+        {
+            ifDisabled = false;
+            float x = 0f; float y = 0f; float z = 0f; float scale = 1.85f;
+            foreach (VRRig Players in GorillaParent.instance.vrrigs)
+            {
+                if (Players.mainSkin.material.name.Contains("fected"))
+                {
+                    fected = true;
+                }
+                else
+                {
+                    casual = true;
+                }
+
+                if (!ifDisabled)
+                {
+                    if (fected)
+                    {
+                        x = scale; y = scale; z = scale;
+
+                        Vector3 Position = GorillaTagger.Instance.bodyCollider.transform.position;
+
+                        GameObject bodySphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                        GameObject lineFollow = new GameObject("Line");
+                        LineRenderer lineUser = lineFollow.AddComponent<LineRenderer>();
+
+                        UnityEngine.Color sphereColor = new Color32(0, 255, 0, 125);
+                        UnityEngine.Color lineColor = new Color32(0, 255, 0, 125);
+                        UnityEngine.Color lineColor1 = new Color32(0, 255, 0, 125);
+
+                        lineUser.startColor = lineColor; lineUser.endColor = lineColor1;
+                        lineUser.startWidth = 0.0225f; lineUser.endWidth = 0.0225f;
+                        bodySphere.transform.localScale = new Vector3(x, y, z);
+
+                        lineUser.useWorldSpace = true;
+
+                        bodySphere.transform.position = Players.transform.position;
+                        lineUser.positionCount = 2;
+                        lineUser.SetPosition(0, Position);
+                        lineUser.SetPosition(1, bodySphere.transform.position);
+
+                        bodySphere.GetComponent<Renderer>().material.shader = Shader.Find("GUI/Text Shader");
+                        lineUser.material.shader = Shader.Find("GUI/Text Shader");
+
+                        UnityEngine.Object.Destroy(bodySphere.GetComponent<BoxCollider>());
+                        UnityEngine.Object.Destroy(bodySphere.GetComponent<Collider>());
+                        UnityEngine.Object.Destroy(bodySphere.GetComponent<Rigidbody>());
+
+                        UnityEngine.Object.Destroy(bodySphere, Time.deltaTime);
+                        UnityEngine.Object.Destroy(lineFollow, Time.deltaTime);
+                    }
+                    else { x = 0f; y = 0f; z = 0f; }
+
+                    if (casual)
+                    {
+                        x = scale; y = scale; z = scale;
+
+                        Vector3 Position = GorillaTagger.Instance.bodyCollider.transform.position;
+
+                        GameObject bodySphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                        GameObject lineFollow = new GameObject("Line");
+                        LineRenderer lineUser = lineFollow.AddComponent<LineRenderer>();
+
+                        UnityEngine.Color sphereColor = new Color32(0, 255, 0, 125);
+                        UnityEngine.Color lineColor = new Color32(0, 255, 0, 125);
+                        UnityEngine.Color lineColor1 = new Color32(0, 255, 0, 125);
+
+                        lineUser.startColor = lineColor; lineUser.endColor = lineColor1;
+                        lineUser.startWidth = 0.0225f; lineUser.endWidth = 0.0225f;
+                        bodySphere.transform.localScale = new Vector3(x, y, z);
+
+                        lineUser.useWorldSpace = true;
+
+                        bodySphere.transform.position = Players.transform.position;
+                        lineUser.positionCount = 2;
+                        lineUser.SetPosition(0, Position);
+                        lineUser.SetPosition(1, bodySphere.transform.position);
+
+                        bodySphere.GetComponent<Renderer>().material.shader = Shader.Find("GUI/Text Shader");
+                        lineUser.material.shader = Shader.Find("GUI/Text Shader");
+
+                        UnityEngine.Object.Destroy(bodySphere.GetComponent<BoxCollider>());
+                        UnityEngine.Object.Destroy(bodySphere.GetComponent<Collider>());
+                        UnityEngine.Object.Destroy(bodySphere.GetComponent<Rigidbody>());
+
+                        UnityEngine.Object.Destroy(bodySphere, Time.deltaTime);
+                        UnityEngine.Object.Destroy(lineFollow, Time.deltaTime);
+                    }
+                    else { x = 0f; y = 0f; z = 0f; }
+                }
+                else { Debug.Log("ur cooked ggs.   [RE ENABLE or fix by disabling and undisabling.]"); break; }
+            }
+        }
+
+        public static void disableChams()
+        {
+            ifDisabled = true;
+            casual = false; fected = false;
+        }
+
+        public static void GrabMonkeyPlushCosmetic()
+        {
+            if (ControllerInputPoller.instance.leftGrab)
+            {
+                GameObject MonkeyCosmetic = GameObject.Find("Player Objects/Local VRRig/Local Gorilla Player/Holdables/GTMonkePlushAnchor/LMAJA.");
+                MonkeyCosmetic.transform.IsChildOf(GorillaTagger.Instance.transform);
+                if (MonkeyCosmetic.transform.IsChildOf(GorillaTagger.Instance.transform))
+                {
+                    MonkeyCosmetic.SetActive(true);
+
+                    MonkeyCosmetic.transform.position = GorillaTagger.Instance.leftHandTransform.position;
+                    MonkeyCosmetic.transform.rotation = GorillaTagger.Instance.rightHandTransform.rotation;
+                }
+            }
+            if (ControllerInputPoller.instance.rightGrab)
+            {
+                GameObject MonkeyCosmetic = GameObject.Find("Player Objects/Local VRRig/Local Gorilla Player/Holdables/GTMonkePlushAnchor/LMAJA.");
+                MonkeyCosmetic.transform.IsChildOf(GorillaTagger.Instance.transform);
+                if (MonkeyCosmetic.transform.IsChildOf(GorillaTagger.Instance.transform))
+                {
+                    MonkeyCosmetic.SetActive(true);
+
+                    MonkeyCosmetic.transform.position = GorillaTagger.Instance.leftHandTransform.position;
+                    Vector3 rotation = GorillaTagger.Instance.rightHandTransform.rotation.eulerAngles;
+                    rotation += new Vector3(0f, 0f, 180f);
+                    MonkeyCosmetic.transform.rotation = Quaternion.Euler(rotation);
+                }
+            }
+        }
+
+        public static void ConfiguribleSpeedBoost()
+        {
+            GorillaLocomotion.Player.Instance.maxJumpSpeed = Boost_Count;
+            GorillaLocomotion.Player.Instance.jumpMultiplier = Boost_Count;
+            if (Boost_Count < 1)
+            {
+                Boost_RESET();
+                NotifiLib.SendNotification("<color=yellow> ERROR </color> <color=cyan> Cannot Set Speed Multiplier Lower Than 1 </color>");
+            }
+            else
+            {
+                if (Boost_Count > 14)
+                {
+                    Boost_RESET();
+                    NotifiLib.SendNotification("<color=yellow> ERROR </color> <color=cyan> Speed Multiplier Over 14 Will Become Detected. </color>");
+                }
+            }
+            if (WristMenu.abuttonDown)
+            {
+                Boost_Count++;
+                NotifiLib.SendNotification("<color=yellow> INFO </color> <color=cyan> Speed Boost Multiplier Set To [ </color>" + Boost_Count + "<color=cyan> ] </color>");
+            }
+            else
+            {
+                if (WristMenu.xbuttonDown)
+                {
+                    Boost_Count--;
+                    NotifiLib.SendNotification("<color=yellow> INFO </color> <color=cyan> Speed Boost Multiplier Set To [ </color>" + Boost_Count + "<color=cyan> ] </color>");
+                }
+                else
+                {
+                    if (WristMenu.bbuttonDown)
+                    {
+                        NotifiLib.ClearAllNotifications();
+                    }
+                }
+            }
+        }
+        public static int Boost_Count = 8;
+        public static void Boost_RESET()
+        {
+            Boost_Count = 8;
+        }
+
+        public static void TimeControl()
+        {
+            BetterDayNightManager.instance.SetTimeOfDay(TimeToSet);
+            if (WristMenu.abuttonDown)
+            {
+                TimeToSet = 3;
+                NotifiLib.SendNotification("<color=yellow> INFO </color> <color=cyan> Time Set To [ Day ]</color>");
+            }
+            else
+            {
+                if (WristMenu.bbuttonDown)
+                {
+                    TimeToSet = 0;
+                    NotifiLib.SendNotification("<color=yellow> INFO </color> <color=cyan> Time To Set [ Night ]</color>");
+                }
+                else
+                {
+                    if (WristMenu.xbuttonDown)
+                    {
+                        TimeToSet = 1;
+                        NotifiLib.SendNotification("<color=yellow> INFO </color> <color=cyan> Time To Change To [ Sunrise ]</color>");
+                    }
+                }
+            }
+        }
+        public static int TimeToSet;
+
+        public static void Frozone()
+        {
+            if (WristMenu.gripDownL)
+            {
+                GameObject lol = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                lol.transform.localScale = new Vector3(0.025f, 0.3f, 0.4f);
+                lol.transform.localPosition = GorillaTagger.Instance.leftHandTransform.position + new Vector3(0f, -0.05f, 0f);
+                lol.transform.rotation = GorillaTagger.Instance.leftHandTransform.rotation;
+
+                lol.AddComponent<GorillaSurfaceOverride>().overrideIndex = 61;
+                UnityEngine.Object.Destroy(lol, 1);
+            }
+
+            if (WristMenu.gripDownR)
+            {
+                GameObject lol = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                lol.transform.localScale = new Vector3(0.025f, 0.3f, 0.4f);
+                lol.transform.localPosition = GorillaTagger.Instance.rightHandTransform.position + new Vector3(0f, -0.05f, 0f);
+                lol.transform.rotation = GorillaTagger.Instance.rightHandTransform.rotation;
+
+                lol.AddComponent<GorillaSurfaceOverride>().overrideIndex = 61;
+                UnityEngine.Object.Destroy(lol, 1);
+            }
+        }
+
+        public static void FlickTag()
+        {
+            if (ControllerInputPoller.instance.rightGrab == true)
+            {
+
+                Physics.Raycast(GorillaLocomotion.Player.Instance.rightControllerTransform.position - GorillaLocomotion.Player.Instance.rightControllerTransform.up, -GorillaLocomotion.Player.Instance.rightControllerTransform.up, out var hitInfo);
+                pointer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                pointer.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                pointer.transform.GetComponent<Renderer>().material.color = UnityEngine.Color.white;
+                pointer.transform.position = hitInfo.point;
+                UnityEngine.Object.Destroy(pointer.GetComponent<BoxCollider>());
+                UnityEngine.Object.Destroy(pointer.GetComponent<Rigidbody>());
+                UnityEngine.Object.Destroy(pointer.GetComponent<Collider>());
+                UnityEngine.Object.Destroy(pointer, Time.deltaTime);
+                if (ControllerInputPoller.TriggerFloat(XRNode.RightHand) > 0.6f)
+                {
+                    GorillaLocomotion.Player.Instance.rightControllerTransform.position = hitInfo.point;
+                }
+            }
+        }
+
+        public static void SnakeChams()
+        {
+            if (PhotonNetwork.InRoom || PhotonNetwork.InLobby)
+            {
+                foreach (VRRig FullPlayers in GorillaParent.instance.vrrigs)
+                {
+                    if (FullPlayers != GorillaTagger.Instance.offlineVRRig)
+                    {
+                        if (FullPlayers.mainSkin.material.name.Contains("fected"))
+                        {
+                            GameObject ThePointer1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                            ThePointer1.transform.localScale = new Vector3(0.085f, 0.085f, 0.085f);
+                            ThePointer1.transform.position = FullPlayers.transform.position;
+                            ThePointer1.transform.rotation = FullPlayers.transform.rotation;
+                            Shader ESPShader = Shader.Find("GUI/Text Shader");
+                            ThePointer1.GetComponent<Renderer>().material.shader = ESPShader;
+                            ThePointer1.GetComponent<Renderer>().material.color = Color.red;
+                            UnityEngine.Object.Destroy(ThePointer1, 0.175f);
+                            UnityEngine.Object.Destroy(ThePointer1.GetComponent<BoxCollider>());
+                            UnityEngine.Object.Destroy(ThePointer1.GetComponent<Rigidbody>());
+                        }
+                        else
+                        {
+                            GameObject ThePointer1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                            ThePointer1.transform.localScale = new Vector3(0.085f, 0.085f, 0.085f);
+                            ThePointer1.transform.position = FullPlayers.transform.position;
+                            ThePointer1.transform.rotation = FullPlayers.transform.rotation;
+                            Shader ESPShader = Shader.Find("GUI/Text Shader");
+                            ThePointer1.GetComponent<Renderer>().material.shader = ESPShader;
+                            ThePointer1.GetComponent<Renderer>().material.color = FullPlayers.mainSkin.material.color;
+                            UnityEngine.Object.Destroy(ThePointer1, 0.175f);
+                            UnityEngine.Object.Destroy(ThePointer1.GetComponent<BoxCollider>());
+                            UnityEngine.Object.Destroy(ThePointer1.GetComponent<Rigidbody>());
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void QuitGame() 
+        {
+        UnityEngine.Application.Quit();
+        }
+
+        public static GameObject pointer;
+        public static void fpc()
+        {
+            fpcc = true;
+            if (GameObject.Find("Third Person Camera") != null)
+            {
+                funn = GameObject.Find("Third Person Camera");
+                funn.SetActive(false);
+            }
+            if (GameObject.Find("CameraTablet(Clone)") != null)
+            {
+                funn = GameObject.Find("CameraTablet(Clone)");
+                funn.SetActive(false);
+            }
+        }
+
+        public static void fpcoff()
+        {
+            fpcc = false;
+            if (funn != null)
+            {
+                funn.SetActive(true);
+                funn = null;
+            }
+        }
+        
+        public static void Save()
+        {
+            WristMenu.settingsbuttons[1].enabled = false;
+            WristMenu.DestroyMenu();
+            WristMenu.instance.Draw();
+            List<String> list = new List<String>();
+            foreach (ButtonInfo info in WristMenu.settingsbuttons)
+            {
+                if (info.enabled == true)
+                {
+                    list.Add(info.buttonText);
+                }
+            }
+            System.IO.Directory.CreateDirectory("TemplatePrefs");
+            System.IO.File.WriteAllLines("TemplatePrefs\\templateSavedPrefs.txt", list);
+        }
+
+        public static void Load()
+        {
+            String[] thing = System.IO.File.ReadAllLines("TemplatePrefs\\templateSavedPrefs.txt");
+            foreach (String thing2 in thing)
+            {
+                foreach (ButtonInfo b in WristMenu.settingsbuttons)
+                {
+                    if (b.buttonText == thing2)
+                    {
+                        b.enabled = true;
+                    }
+                }
+            }
+        }
+
+        private static void PlatformsThing(bool invis, bool sticky)
+        {
+            colorKeysPlatformMonke[0].color = Color.red;
+            colorKeysPlatformMonke[0].time = 0f;
+            colorKeysPlatformMonke[1].color = Color.green;
+            colorKeysPlatformMonke[1].time = 0.3f;
+            colorKeysPlatformMonke[2].color = Color.blue;
+            colorKeysPlatformMonke[2].time = 0.6f;
+            colorKeysPlatformMonke[3].color = Color.red;
+            colorKeysPlatformMonke[3].time = 1f;
+            bool inputr;
+            bool inputl;
+                inputr = WristMenu.gripDownR;
+                inputl = WristMenu.gripDownL;
+            if (inputr)
+            {
+                if (!once_right && jump_right_local == null)
+                {
+                    if (sticky)
+                    {
+                        jump_right_local = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    }
+                    else
+                    {
+                        jump_right_local = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    }
+                    jump_right_local.GetComponent<Renderer>().material.SetColor("_Color", Color.black);
+                    if (invis)
+                    {
+                        UnityEngine.Object.Destroy(jump_right_local.GetComponent<Renderer>());
+                    }
+                    jump_right_local.transform.localScale = scale;
+                    jump_right_local.transform.position = new Vector3(0f, -0.0100f, 0f) + GorillaLocomotion.Player.Instance.rightControllerTransform.position;
+                    jump_right_local.transform.rotation = GorillaLocomotion.Player.Instance.rightControllerTransform.rotation;
+                    object[] eventContent = new object[2]
+                    {
+                    new Vector3(0f, -0.0100f, 0f) + GorillaLocomotion.Player.Instance.rightControllerTransform.position,
+                    GorillaLocomotion.Player.Instance.rightControllerTransform.rotation
+                    };
+                    RaiseEventOptions raiseEventOptions = new RaiseEventOptions
+                    {
+                        Receivers = ReceiverGroup.Others
+                    };
+                    PhotonNetwork.RaiseEvent(70, eventContent, raiseEventOptions, SendOptions.SendReliable);
+                    once_right = true;
+                    once_right_false = false;
+                    ColorChanger colorChanger = jump_right_local.AddComponent<ColorChanger>();
+                    Gradient gradient = new Gradient();
+                    gradient.colorKeys = colorKeysPlatformMonke;
+                    colorChanger.colors = gradient;
+                    colorChanger.Start();
+                }
+            }
+            else if (!once_right_false && jump_right_local != null)
+            {
+                UnityEngine.Object.Destroy(jump_right_local);
+                jump_right_local = null;
+                once_right = false;
+                once_right_false = true;
+                RaiseEventOptions raiseEventOptions2 = new RaiseEventOptions
+                {
+                    Receivers = ReceiverGroup.Others
+                };
+                PhotonNetwork.RaiseEvent(72, null, raiseEventOptions2, SendOptions.SendReliable);
+            }
+            if (inputl)
+            {
+                if (!once_left && jump_left_local == null)
+                {
+                    if (sticky)
+                    {
+                        jump_left_local = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    }
+                    else
+                    {
+                        jump_left_local = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    }
+                    jump_left_local.GetComponent<Renderer>().material.SetColor("_Color", Color.black);
+                    if (invis)
+                    {
+                        UnityEngine.Object.Destroy(jump_left_local.GetComponent<Renderer>());
+                    }
+                    jump_left_local.transform.localScale = scale;
+                    jump_left_local.transform.position = new Vector3(0f, -0.0100f, 0f) + GorillaLocomotion.Player.Instance.leftControllerTransform.position;
+                    jump_left_local.transform.rotation = GorillaLocomotion.Player.Instance.leftControllerTransform.rotation;
+                    object[] eventContent2 = new object[2]
+                    {
+                    new Vector3(0f, -0.0100f, 0f) + GorillaLocomotion.Player.Instance.leftControllerTransform.position,
+                    GorillaLocomotion.Player.Instance.leftControllerTransform.rotation
+                    };
+                    RaiseEventOptions raiseEventOptions3 = new RaiseEventOptions
+                    {
+                        Receivers = ReceiverGroup.Others
+                    };
+                    PhotonNetwork.RaiseEvent(69, eventContent2, raiseEventOptions3, SendOptions.SendReliable);
+                    once_left = true;
+                    once_left_false = false;
+                    ColorChanger colorChanger2 = jump_left_local.AddComponent<ColorChanger>();
+                    Gradient gradient2 = new Gradient();
+                    gradient2.colorKeys = colorKeysPlatformMonke;
+                    colorChanger2.colors = gradient2;
+                    colorChanger2.Start();
+                }
+            }
+            else if (!once_left_false && jump_left_local != null)
+            {
+                UnityEngine.Object.Destroy(jump_left_local);
+                jump_left_local = null;
+                once_left = false;
+                once_left_false = true;
+                RaiseEventOptions raiseEventOptions4 = new RaiseEventOptions
+                {
+                    Receivers = ReceiverGroup.Others
+                };
+                PhotonNetwork.RaiseEvent(71, null, raiseEventOptions4, SendOptions.SendReliable);
+            }
+            if (!PhotonNetwork.InRoom)
+            {
+                for (int i = 0; i < jump_right_network.Length; i++)
+                {
+                    UnityEngine.Object.Destroy(jump_right_network[i]);
+                }
+                for (int j = 0; j < jump_left_network.Length; j++)
+                {
+                    UnityEngine.Object.Destroy(jump_left_network[j]);
+                }
+            }
+        }
+
+        public static void RightHand()
+        {
+            Mods.rightHanded = true;
+        }
+
+        public static void LeftHand()
+        {
+            Mods.rightHanded = false;
+        }
+
+        private static Vector3 scale = new Vector3(0.0125f, 0.28f, 0.3825f);
+
+        private static bool once_left;
+
+        private static bool once_right;
+
+        private static bool once_left_false;
+
+        private static bool once_right_false;
+
+        private static bool once_networking;
+
+        private static GameObject[] jump_left_network = new GameObject[9999];
+
+        private static GameObject[] jump_right_network = new GameObject[9999];
+
+        private static GameObject jump_left_local = null;
+
+        private static GameObject jump_right_local = null;
+
+        private static GradientColorKey[] colorKeysPlatformMonke = new GradientColorKey[4];
+
+        private static Vector3? checkpointPos;
+
+        public static bool rightHanded = false;
+
+    }
+}
