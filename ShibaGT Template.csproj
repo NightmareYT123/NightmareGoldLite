@@ -39,6 +39,7 @@
     <Compile Include="Backend\Mods.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\MenuGUI.cs" />
     <Compile Include="UI\NotifLib.cs" />
     <Compile Include="UI\WristMenu.cs" />
     <Compile Include="Utilities\ColorChanger.cs" />

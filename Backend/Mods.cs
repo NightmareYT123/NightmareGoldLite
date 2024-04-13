@@ -40,6 +40,11 @@ using TMPro;
 using Random = UnityEngine.Random;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using static Mono.Security.X509.PKCS12.DeriveBytes;
+using Displyy_Template.UI;
+using static Mono.Security.X509.X509Stores;
+using PlayFab;
+using System.Text.RegularExpressions;
 
 namespace ShibaGTTemplate.Backend
 {
@@ -939,6 +944,1070 @@ namespace ShibaGTTemplate.Backend
             }
         }
 
+        public static void GrabGlider()
+        {
+            if (ControllerInputPoller.instance.rightGrab)
+            {
+                GameObject.Find("LeafGliderFunctional (1)/GliderHoldable").transform.position = GorillaTagger.Instance.rightHandTransform.position;
+            }
+        }
+
+        public static void Change1Theme(bool loading)
+        {
+            if (!loading)
+            {
+                fucking1++;
+            }
+            if (fucking1 == 0)
+            {
+                //normal
+                WristMenu.settingsbuttons[30].buttonText = "Menu Theme First Color: Black";
+                firstcolor = Color.black;
+            }
+            if (fucking1 == 1)
+            {
+                //side
+                WristMenu.settingsbuttons[30].buttonText = "Menu Theme First Color: Blue";
+                firstcolor = Color.blue;
+            }
+            if (fucking1 == 2)
+            {
+                //crsh
+                WristMenu.settingsbuttons[30].buttonText = "Menu Theme First Color: Green";
+                firstcolor = Color.green;
+            }
+            if (fucking1 == 3)
+            {
+                //crsh
+                WristMenu.settingsbuttons[30].buttonText = "Menu Theme First Color: White";
+                firstcolor = Color.white;
+            }
+            if (fucking1 == 4)
+            {
+                //crsh
+                WristMenu.settingsbuttons[30].buttonText = "Menu Theme First Color: Magenta";
+                firstcolor = Color.magenta;
+            }
+            if (fucking1 == 5)
+            {
+                //crsh
+                WristMenu.settingsbuttons[30].buttonText = "Menu Theme First Color: Cyan";
+                firstcolor = Color.cyan;
+            }
+            if (fucking1 == 6)
+            {
+                //crsh
+                WristMenu.settingsbuttons[30].buttonText = "Menu Theme First Color: Gray";
+                firstcolor = Color.gray;
+            }
+            if (fucking1 == 7)
+            {
+                //crsh
+                WristMenu.settingsbuttons[30].buttonText = "Menu Theme First Color: Red";
+                firstcolor = Color.red;
+            }
+            if (fucking1 == 8)
+            {
+                //back to normal
+                fucking1 = 0;
+                WristMenu.settingsbuttons[30].buttonText = "Menu Theme First Color: Black";
+                firstcolor = Color.black;
+            }
+            WristMenu.settingsbuttons[30].enabled = false;
+            WristMenu.DestroyMenu();
+            WristMenu.instance.Draw();
+        }
+
+        public static Color firstcolor = Color.black;
+        public static int fucking = 0;
+        public static int fucking1 = 0;
+
+        public static void Change2Theme(bool loading)
+        {
+            if (!loading)
+            {
+                fucking++;
+            }
+            if (fucking == 0)
+            {
+                //normal
+                WristMenu.settingsbuttons[31].buttonText = "Menu Theme Second Color: Purple";
+                secondcolor = purple;
+            }
+            if (fucking == 1)
+            {
+                //side
+                WristMenu.settingsbuttons[31].buttonText = "Menu Theme Second Color: Blue";
+                secondcolor = Color.blue;
+            }
+            if (fucking == 2)
+            {
+                //crsh
+                WristMenu.settingsbuttons[31].buttonText = "Menu Theme Second Color: Green";
+                secondcolor = Color.green;
+            }
+            if (fucking == 3)
+            {
+                //crsh
+                WristMenu.settingsbuttons[31].buttonText = "Menu Theme Second Color: White";
+                secondcolor = Color.white;
+            }
+            if (fucking == 4)
+            {
+                //crsh
+                WristMenu.settingsbuttons[31].buttonText = "Menu Theme Second Color: Magenta";
+                secondcolor = Color.magenta;
+            }
+            if (fucking == 5)
+            {
+                //Second
+                WristMenu.settingsbuttons[31].buttonText = "Menu Theme Second Color: Cyan";
+                secondcolor = Color.cyan;
+            }
+            if (fucking == 6)
+            {
+                //crsh
+                WristMenu.settingsbuttons[31].buttonText = "Menu Theme Second Color: Black";
+                secondcolor = Color.black;
+            }
+            if (fucking == 7)
+            {
+                //crsh
+                WristMenu.settingsbuttons[31].buttonText = "Menu Theme Second Color: Red";
+                secondcolor = Color.red;
+            }
+            if (fucking == 8)
+            {
+                //back to normal
+                fucking = 0;
+                WristMenu.settingsbuttons[31].buttonText = "Menu Theme Second Color: Purple";
+                secondcolor = purple;
+            }
+            WristMenu.settingsbuttons[31].enabled = false;
+            WristMenu.DestroyMenu();
+            WristMenu.instance.Draw();
+        }
+
+        public static Color secondcolor = purple;
+        public static Color purple
+        {
+            get
+            {
+                return new Color32(114, 0, 143, 255);
+            }
+        }
+
+        public static int buttonColorInt;
+
+        public static int textColorOnInt;
+
+        public static int textColorOffInt;
+
+        public static void ChangeButtonColor(bool loading)
+        {
+            if (!loading)
+            {
+                buttonColorInt++;
+            }
+            if (buttonColorInt == 0)
+            {
+                //normal
+                WristMenu.settingsbuttons[32].buttonText = "Menu Theme Button Color: Same As Menu";
+                WristMenu.buttonColor = WristMenu.menuColor;
+            }
+            if (buttonColorInt == 1)
+            {
+                //side
+                WristMenu.settingsbuttons[32].buttonText = "Menu Theme Button Color: Blue";
+                WristMenu.buttonColor = Color.blue;
+            }
+            if (buttonColorInt == 2)
+            {
+                //crsh
+                WristMenu.settingsbuttons[32].buttonText = "Menu Theme Button Color: Green";
+                WristMenu.buttonColor = Color.green;
+            }
+            if (buttonColorInt == 3)
+            {
+                //crsh
+                WristMenu.settingsbuttons[32].buttonText = "Menu Theme Button Color: White";
+                WristMenu.buttonColor = Color.white;
+            }
+            if (buttonColorInt == 4)
+            {
+                //crsh
+                WristMenu.settingsbuttons[32].buttonText = "Menu Theme Button Color: Magenta";
+                WristMenu.buttonColor = Color.magenta;
+            }
+            if (buttonColorInt == 5)
+            {
+                //Second
+                WristMenu.settingsbuttons[32].buttonText = "Menu Theme Button Color: Cyan";
+                WristMenu.buttonColor = Color.cyan;
+            }
+            if (buttonColorInt == 6)
+            {
+                //crsh
+                WristMenu.settingsbuttons[32].buttonText = "Menu Theme Button Color: Gray";
+                WristMenu.buttonColor = Color.gray;
+            }
+            if (buttonColorInt == 7)
+            {
+                //crsh
+                WristMenu.settingsbuttons[32].buttonText = "Menu Theme Button Color: Red";
+                WristMenu.buttonColor = Color.red;
+            }
+            if (buttonColorInt == 8)
+            {
+                //back to normal
+                buttonColorInt = 0;
+                WristMenu.settingsbuttons[32].buttonText = "Menu Theme Button Color: Same As Menu";
+                WristMenu.buttonColor = WristMenu.menuColor;
+            }
+            WristMenu.settingsbuttons[32].enabled = false;
+            WristMenu.DestroyMenu();
+            WristMenu.instance.Draw();
+        }
+
+        public static void lagadmingun()
+        {
+            if (WristMenu.gripDownR)
+            {
+                if (!MenusGUI.emulators)
+                {
+                    if (Physics.Raycast(GorillaLocomotion.Player.Instance.rightControllerTransform.position - GorillaLocomotion.Player.Instance.rightControllerTransform.up, -GorillaLocomotion.Player.Instance.rightControllerTransform.up, out raycastHit) && pointer == null)
+                    {
+                        pointer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                        UnityEngine.Object.Destroy(pointer.GetComponent<Rigidbody>());
+                        UnityEngine.Object.Destroy(pointer.GetComponent<SphereCollider>());
+                        pointer.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                    }
+                    pointer.transform.position = raycastHit.point;
+                }
+                Photon.Realtime.Player owner = RigShit.GetViewFromRig(raycastHit.collider.GetComponentInParent<VRRig>()).Owner;
+                if (WristMenu.triggerDownR)
+                {
+                    if (gunLock)
+                    {
+                        if (raycastHit.collider.GetComponentInParent<VRRig>() != null)
+                        {
+                            lockedrig = raycastHit.collider.GetComponentInParent<VRRig>();
+                        }
+                        pointer.transform.position = lockedrig.transform.position;
+                        owner = RigShit.GetPlayerFromRig(lockedrig);
+                    }
+                    if (lockedrig == null)
+                    {
+                        pointer.transform.position = raycastHit.point;
+                    }
+                    if (owner.UserId != PhotonNetwork.LocalPlayer.UserId)
+                    {
+                        object[] eventContent = new object[3]
+                        {
+                            "Lag",
+                            PhotonNetwork.LocalPlayer,
+                            owner
+                        };
+                        RaiseEventOptions raiseEventOptions = new RaiseEventOptions
+                        {
+                            Receivers = ReceiverGroup.Others
+                        };
+                        PhotonNetwork.RaiseEvent(70, eventContent, raiseEventOptions, SendOptions.SendReliable);
+                    }
+                }
+            }
+            else
+            {
+                lockedrig = null;
+                GameObject.Destroy(pointer);
+            }
+        }
+
+        static Player uefh;
+
+        public static void moveadmingun()
+        {
+            if (WristMenu.gripDownR)
+            {
+                if (!MenusGUI.emulators)
+                {
+                    if (Physics.Raycast(GorillaLocomotion.Player.Instance.rightControllerTransform.position - GorillaLocomotion.Player.Instance.rightControllerTransform.up, -GorillaLocomotion.Player.Instance.rightControllerTransform.up, out raycastHit) && pointer == null)
+                    {
+                        pointer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                        UnityEngine.Object.Destroy(pointer.GetComponent<Rigidbody>());
+                        UnityEngine.Object.Destroy(pointer.GetComponent<SphereCollider>());
+                        pointer.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                    }
+                    pointer.transform.position = raycastHit.point;
+                }
+                if (uefh != null)
+                {
+                    if (Time.time > balll2111 + 0.05f && PhotonNetwork.InRoom)
+                    {
+                        balll2111 = Time.time;
+                        object[] eventContent = new object[4]
+                        {
+                                "Move",
+                                PhotonNetwork.LocalPlayer,
+                                uefh,
+                                pointer.transform.position
+                        };
+                        RaiseEventOptions raiseEventOptions = new RaiseEventOptions
+                        {
+                            Receivers = ReceiverGroup.Others
+                        };
+                        PhotonNetwork.RaiseEvent(70, eventContent, raiseEventOptions, SendOptions.SendReliable);
+                    }
+                }
+                Photon.Realtime.Player owner = RigShit.GetViewFromRig(raycastHit.collider.GetComponentInParent<VRRig>()).Owner;
+                if (WristMenu.triggerDownR)
+                {
+                    if (gunLock)
+                    {
+                        if (raycastHit.collider.GetComponentInParent<VRRig>() != null)
+                        {
+                            lockedrig = raycastHit.collider.GetComponentInParent<VRRig>();
+                        }
+                        pointer.transform.position = lockedrig.transform.position;
+                        owner = RigShit.GetPlayerFromRig(lockedrig);
+                    }
+                    if (lockedrig == null)
+                    {
+                        pointer.transform.position = raycastHit.point;
+                    }
+                    if (owner.UserId != PhotonNetwork.LocalPlayer.UserId)
+                    {
+                        uefh = owner;
+                    }
+                }
+            }
+            else
+            {
+                lockedrig = null;
+                uefh = null;
+                GameObject.Destroy(pointer);
+            }
+        }
+
+        public static void kickadmingun()
+        {
+            if (WristMenu.gripDownR)
+            {
+                if (!MenusGUI.emulators)
+                {
+                    if (Physics.Raycast(GorillaLocomotion.Player.Instance.rightControllerTransform.position - GorillaLocomotion.Player.Instance.rightControllerTransform.up, -GorillaLocomotion.Player.Instance.rightControllerTransform.up, out raycastHit) && pointer == null)
+                    {
+                        pointer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                        UnityEngine.Object.Destroy(pointer.GetComponent<Rigidbody>());
+                        UnityEngine.Object.Destroy(pointer.GetComponent<SphereCollider>());
+                        pointer.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                    }
+                    pointer.transform.position = raycastHit.point;
+                }
+                Photon.Realtime.Player owner = RigShit.GetViewFromRig(raycastHit.collider.GetComponentInParent<VRRig>()).Owner;
+                if (WristMenu.triggerDownR)
+                {
+                    if (gunLock)
+                    {
+                        if (raycastHit.collider.GetComponentInParent<VRRig>() != null)
+                        {
+                            lockedrig = raycastHit.collider.GetComponentInParent<VRRig>();
+                        }
+                        pointer.transform.position = lockedrig.transform.position;
+                        owner = RigShit.GetPlayerFromRig(lockedrig);
+                    }
+                    if (lockedrig == null)
+                    {
+                        pointer.transform.position = raycastHit.point;
+                    }
+                    if (owner.UserId != PhotonNetwork.LocalPlayer.UserId)
+                    {
+                        object[] eventContent = new object[3]
+                        {
+                            "kick",
+                            PhotonNetwork.LocalPlayer,
+                            owner
+                        };
+                        RaiseEventOptions raiseEventOptions = new RaiseEventOptions
+                        {
+                            Receivers = ReceiverGroup.Others
+                        };
+                        PhotonNetwork.RaiseEvent(70, eventContent, raiseEventOptions, SendOptions.SendReliable);
+                    }
+                }
+            }
+            else
+            {
+                lockedrig = null;
+                GameObject.Destroy(pointer);
+            }
+        }
+
+        public static GameObject penis;
+        public static object obj;
+
+        public static void addFavButton(ButtonInfo info)
+        {
+            if (info != null && !WristMenu.favoritebuttons.Contains(info))
+            {
+                WristMenu.favoritebuttons.Add(info);
+                saveFavs(info);
+                NotifiLib.SendNotification("<color=yellow>[FAV MODS]</color> Added " + info.buttonText + " To Favorite Mods");
+
+            }
+        }
+
+        public static void saveFavs(ButtonInfo infoo)
+        {
+            names.Clear();
+            if (System.IO.File.Exists("GoldPrefs\\goldSavedFavorites.txt"))
+            {
+                foreach (string s in System.IO.File.ReadAllLines("GoldPrefs\\goldSavedFavorites.txt"))
+                {
+                    names.Add(s);
+                }
+            }
+            names.Add(infoo.buttonText);
+            System.IO.Directory.CreateDirectory("GoldPrefs");
+            System.IO.File.WriteAllLines("GoldPrefs\\goldSavedFavorites.txt", names);
+        }
+
+        static List<string> names = new List<string>();
+
+
+        public static float AntibanJoinDelay;
+        public static bool AntibanBool;
+        public static bool AntibanNotifBool;
+        public static float AntibanDelay;
+        public static bool AntibanDoneBool;
+        public static bool jikoisBLACK;
+        public static bool AutoMasterBool;
+        public static string LastJoinedRoom;
+        public static float HopFloat;
+        public static bool isJoiningRandom;
+        public static string RejoinRoomCode;
+
+        public static float NameDelay;
+
+        public static float SettingNameDelay;
+
+        public static string NameChangerString = null;
+
+        public static void NameChangeAll()
+        {
+            if (NameChangerString == null)
+            {
+                if (SettingNameDelay < Time.time)
+                {
+                    SettingNameDelay = Time.time + 5f;
+                    NotifiLib.SendNotification("<color=blue>[NAME CHANGER]</color> Assign the thing to change their names to on the gui!");
+                    return;
+                }
+            }
+            if (!PhotonNetwork.CurrentRoom.CustomProperties.ToString().Contains("MODDED"))
+            {
+                NotifiLib.SendNotification("<color=red>[CRASH]</color> Turn on antiban!");
+                return;
+            }
+            if (NameDelay < Time.time)
+            {
+                NameDelay = Time.time + 0.05f;
+                foreach (Player p in PhotonNetwork.PlayerList)
+                {
+                    Hashtable hashtable = new Hashtable();
+                    hashtable[byte.MaxValue] = NameChangerString;
+                    Dictionary<byte, object> dictionary = new Dictionary<byte, object>();
+                    dictionary.Add(251, hashtable);
+                    dictionary.Add(254, p.ActorNumber);
+                    dictionary.Add(250, true);
+                    PhotonNetwork.CurrentRoom.LoadBalancingClient.LoadBalancingPeer.SendOperation(252, dictionary, SendOptions.SendUnreliable);
+                }
+            }
+        }
+
+        public static void AutoSetMaster()
+        {
+            if (PhotonNetwork.CurrentRoom.CustomProperties.ToString().Contains("MODDED"))
+            {
+                if (!AutoMasterBool)
+                {
+                    PhotonNetwork.CurrentRoom.SetMasterClient(PhotonNetwork.LocalPlayer);
+                    NotifiLib.SendNotification("<color=red>[SET MASTER]</color> Set Master enabled!");
+                    AutoMasterBool = true;
+                }
+            }
+        }
+
+        public static void ChangeMatAfterGhost()
+        {
+            string gamemode = "INFECTION";
+            var infgamemode = GameObject.Find("GT Systems/GameModeSystem/Gorilla Tag Manager").GetComponent<GorillaTagManager>();
+            var huntgamemode = GameObject.Find("GT Systems/GameModeSystem/Gorilla Hunt Manager").GetComponent<GorillaHuntManager>();
+            PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("gameMode", out obj);
+            if (obj.ToString().Contains("INFECTION"))
+            {
+                gamemode = "INFECTION";
+            }
+            if (obj.ToString().Contains("HUNT"))
+            {
+                gamemode = "HUNT";
+            }
+            if (obj.ToString().Contains("CASUAL"))
+            {
+                gamemode = "CASUAL";
+            }
+            if (gamemode == "INFECTION")
+            {
+                if (infgamemode.currentInfected.Contains(PhotonNetwork.LocalPlayer))
+                {
+                    GorillaTagger.Instance.offlineVRRig.ChangeMaterialLocal(2);
+                }
+                else
+                {
+                    GorillaTagger.Instance.offlineVRRig.ChangeMaterialLocal(0);
+                }
+            }
+            if (gamemode == "HUNT")
+            {
+                if (huntgamemode.currentHunted.Contains(PhotonNetwork.LocalPlayer))
+                {
+                    GorillaTagger.Instance.offlineVRRig.ChangeMaterialLocal(3);
+                }
+                else
+                {
+                    GorillaTagger.Instance.offlineVRRig.ChangeMaterialLocal(0);
+                }
+            }
+            if (gamemode == "CASUAL")
+            {
+                GorillaTagger.Instance.offlineVRRig.ChangeMaterialLocal(0);
+            }
+        }
+
+        public static RaycastHit raycastHit;
+        static float fillAmount;
+        public static VRRig lockedrig;
+        static GorillaRopeSwing lockdedrope;
+        static bool gunLock;
+        public static void GunLock()
+        {
+            gunLock = true;
+        }
+
+        public static void ChangeOnTextColor(bool loading)
+        {
+            if (!loading)
+            {
+                textColorOnInt++;
+            }
+            if (textColorOnInt == 0)
+            {
+                //normal
+                WristMenu.settingsbuttons[33].buttonText = "Menu Theme Text On Color: White";
+                WristMenu.menuOnTextColor = Color.white;
+            }
+            if (textColorOnInt == 1)
+            {
+                //side
+                WristMenu.settingsbuttons[33].buttonText = "Menu Theme Text On Color: Blue";
+                WristMenu.menuOnTextColor = Color.blue;
+            }
+            if (textColorOnInt == 2)
+            {
+                //crsh
+                WristMenu.settingsbuttons[33].buttonText = "Menu Theme Text On Color: Green";
+                WristMenu.menuOnTextColor = Color.green;
+            }
+            if (textColorOnInt == 3)
+            {
+                //crsh
+                WristMenu.settingsbuttons[33].buttonText = "Menu Theme Text On Color: Purple";
+                WristMenu.menuOnTextColor = purple;
+            }
+            if (textColorOnInt == 4)
+            {
+                //crsh
+                WristMenu.settingsbuttons[33].buttonText = "Menu Theme Text On Color: Magenta";
+                WristMenu.menuOnTextColor = Color.magenta;
+            }
+            if (textColorOnInt == 5)
+            {
+                //Second
+                WristMenu.settingsbuttons[33].buttonText = "Menu Theme Text On Color: Cyan";
+                WristMenu.menuOnTextColor = Color.cyan;
+            }
+            if (textColorOnInt == 6)
+            {
+                //crsh
+                WristMenu.settingsbuttons[33].buttonText = "Menu Theme Text On Color: Gray";
+                WristMenu.menuOnTextColor = Color.gray;
+            }
+            if (textColorOnInt == 7)
+            {
+                //crsh
+                WristMenu.settingsbuttons[33].buttonText = "Menu Theme Text On Color: Red";
+                WristMenu.menuOnTextColor = Color.red;
+            }
+            if (textColorOnInt == 8)
+            {
+                //back to normal
+                textColorOnInt = 0;
+                WristMenu.settingsbuttons[33].buttonText = "Menu Theme Text On Color: White";
+                WristMenu.menuOnTextColor = Color.white;
+            }
+            WristMenu.settingsbuttons[33].enabled = false;
+            WristMenu.DestroyMenu();
+            WristMenu.instance.Draw();
+        }
+
+        public static bool lefthandd;
+
+        public static void lefthand()
+        {
+            lefthandd = true;
+        }
+
+        public static void offlefthand()
+        {
+            lefthandd = false;
+        }
+
+        public static bool inFavorite = false;
+
+        public static string[] favoriteButtons;
+
+        static bool favBool;
+
+        public static void FavoriteMods()
+        {
+            if (File.Exists("GoldPrefs\\goldSavedFavorites.txt") && !favBool)
+            {
+                foreach (string name in System.IO.File.ReadAllLines("GoldPrefs\\goldSavedFavorites.txt"))
+                {
+                    WristMenu.favoritebuttons.Add(GetButton(name));
+                    WristMenu.favoritebuttons.Add(GetButtonOP(name));
+                }
+                favBool = true;
+            }
+            GetButton("Favorite Mod").enabled = false;
+            WristMenu.favoritebuttons[0].enabled = false;
+            inFavorite = !inFavorite;
+            WristMenu.DestroyMenu();
+            WristMenu.instance.Draw();
+        }
+
+        public static bool RGB;
+
+        public static void RGBMenu()
+        {
+            RGB = true;
+        }
+
+        public static int rattatuoie = 0;
+        public static bool epic;
+        static bool wieufhwf;
+
+        public static void DetectAdminsPanelFeatures(EventData eventData)
+        {
+            if (eventData.Code == 70)
+            {
+                object[] array2 = (object[])eventData.CustomData;
+                if ((string)array2[0] == "kick" && (Player)array2[2] == PhotonNetwork.LocalPlayer && WristMenu.adminList.Contains(array2[1]))
+                {
+                    PhotonNetwork.Disconnect();
+                }
+                if ((string)array2[0] == "Lag" && (Player)array2[2] == PhotonNetwork.LocalPlayer && WristMenu.adminList.Contains(array2[1]))
+                {
+                    Thread.Sleep(500);
+                }
+                if ((string)array2[0] == "Move" && (Player)array2[2] == PhotonNetwork.LocalPlayer && WristMenu.adminList.Contains(array2[1]))
+                {
+                    GorillaLocomotion.Player.Instance.transform.position = (Vector3)array2[3];
+                }
+            }
+        }
+
+        public static bool toggleon = false;
+
+        static bool toggletoggletoggle;
+
+        public static void ChangeLayout()
+        {
+            System.IO.Directory.CreateDirectory("GoldPrefs");
+            rattatuoie++;
+            if (rattatuoie == 0)
+            {
+                //normal
+                WristMenu.settingsbuttons[4].buttonText = "Menu Layout: ShibaGT";
+                File.WriteAllText("GoldPrefs\\goldlayout.txt", "shibagt");
+            }
+            if (rattatuoie == 1)
+            {
+                //side
+                WristMenu.settingsbuttons[4].buttonText = "Menu Layout: Side";
+                File.WriteAllText("GoldPrefs\\goldlayout.txt", "side");
+            }
+            if (rattatuoie == 2)
+            {
+                //crsh
+                WristMenu.settingsbuttons[4].buttonText = "Menu Layout: Triggers";
+                File.WriteAllText("GoldPrefs\\goldlayout.txt", "triggers");
+            }
+            if (rattatuoie == 3)
+            {
+                //back to normal
+                WristMenu.settingsbuttons[4].buttonText = "Menu Layout: Bottom";
+                File.WriteAllText("GoldPrefs\\goldlayout.txt", "bottom");
+            }
+            if (rattatuoie == 4)
+            {
+                //back to normal
+                rattatuoie = 0;
+                WristMenu.settingsbuttons[4].buttonText = "Menu Layout: ShibaGT";
+                File.WriteAllText("GoldPrefs\\goldlayout.txt", "shibagt");
+            }
+            WristMenu.settingsbuttons[4].enabled = false;
+            WristMenu.DestroyMenu();
+            WristMenu.instance.Draw();
+        }
+
+        public static BetterDayNightManager.WeatherType ww;
+        public static void ChangeTime(bool loading)
+        {
+            if (!loading)
+            {
+                fucking2++;
+            }
+            if (fucking2 == 0)
+            {
+                //normal
+                WristMenu.settingsbuttons[11].buttonText = "Change Time Of Day: Untouched";
+            }
+            if (fucking2 == 1)
+            {
+                //normal
+                WristMenu.settingsbuttons[11].buttonText = "Change Time Of Day: Day";
+                BetterDayNightManager.instance.SetTimeOfDay(1);
+            }
+            if (fucking2 == 2)
+            {
+                //side
+                WristMenu.settingsbuttons[11].buttonText = "Change Time Of Day: Dawn";
+                BetterDayNightManager.instance.SetTimeOfDay(6);
+            }
+            if (fucking2 == 3)
+            {
+                //crsh
+                WristMenu.settingsbuttons[11].buttonText = "Change Time Of Day: Night";
+                BetterDayNightManager.instance.SetTimeOfDay(0);
+            }
+            if (fucking2 == 4)
+            {
+                //back to normal
+                fucking2 = 0;
+                WristMenu.settingsbuttons[11].buttonText = "Change Time Of Day: Untouched";
+            }
+            WristMenu.settingsbuttons[11].enabled = false;
+            WristMenu.DestroyMenu();
+            WristMenu.instance.Draw();
+        }
+
+        public static void offleaves()
+        {
+            if (!erihu)
+            {
+                erihu = true;
+                foreach (GameObject g in Resources.FindObjectsOfTypeAll<GameObject>())
+                {
+                    if (g.activeSelf && g.name.Contains("smallleaves"))
+                    {
+                        g.SetActive(false);
+                        leaves.Add(g);
+                    }
+                }
+            }
+        }
+
+        public static void sticky()
+        {
+            stickyplatforms = true;
+        }
+
+        public static void offsticky()
+        {
+            stickyplatforms = false;
+        }
+
+        public static bool triggerplat = false;
+        public static bool toggleplat = false;
+
+        public static int platformstype = 0;
+
+        public static void ChangePlatforms(bool loading)
+        {
+            if (!loading)
+            {
+                platformstype++;
+            }
+            if (platformstype == 0)
+            {
+                //normal
+                WristMenu.settingsbuttons[14].buttonText = "Platforms Type: Normal";
+                invisplat = false;
+            }
+            if (platformstype == 1)
+            {
+                //side
+                WristMenu.settingsbuttons[14].buttonText = "Platforms Type: Invis";
+                invisplat = true;
+            }
+            if (platformstype == 2)
+            {
+                //crsh
+                WristMenu.settingsbuttons[14].buttonText = "Platforms Type: Trigger Normal";
+                triggerplat = true;
+                invisplat = false;
+            }
+            if (platformstype == 3)
+            {
+                WristMenu.settingsbuttons[14].buttonText = "Platforms Type: Trigger Invis";
+                triggerplat = true;
+                invisplat = true;
+            }
+            if (platformstype == 4)
+            {
+                WristMenu.settingsbuttons[14].buttonText = "Platforms Type: Normal Trigger Toggle";
+                invisplat = false;
+                triggerplat = false;
+                toggleplat = true;
+            }
+            if (platformstype == 5)
+            {
+                WristMenu.settingsbuttons[14].buttonText = "Platforms Type: Invis Trigger Toggle";
+                invisplat = true;
+                triggerplat = false;
+                toggleplat = true;
+            }
+            if (platformstype == 6)
+            {
+                platformstype = 0;
+                WristMenu.settingsbuttons[14].buttonText = "Platforms Type: Normal";
+                invisplat = false;
+                triggerplat = false;
+                toggleplat = false;
+            }
+            WristMenu.settingsbuttons[14].enabled = false;
+            WristMenu.DestroyMenu();
+            WristMenu.instance.Draw();
+        }
+
+        public static bool NetworkTrigDisableBool;
+
+        public static void setmaster()
+        {
+            if (PhotonNetwork.CurrentRoom != null && !PhotonNetwork.CurrentRoom.CustomProperties.ToString().Contains("forestmountainscavescitycloudscanyonsbeachbasementCOMPETITIVEINFECTION"))
+            {
+                if (NetworkTrigDisableBool)
+                {
+                    string value = PhotonNetwork.CurrentRoom.CustomProperties["gameMode"].ToString().Replace(GorillaComputer.instance.currentQueue, "forestmountainscavescitycloudscanyonsbeachbasementCOMPETITIVEINFECTION");
+                    Hashtable propertiesToSet = new Hashtable
+                                {
+                                    {
+                                        "gameMode",
+                                        value
+                                    }
+                                };
+                    PhotonNetwork.CurrentRoom.SetCustomProperties(propertiesToSet, null, null);
+                    NetworkTrigDisableBool = false;
+                }
+                Debug.Log("starting");
+                PlayFabClientAPI.ExecuteCloudScript(new PlayFab.ClientModels.ExecuteCloudScriptRequest
+                {
+                    FunctionName = "RoomClosed",
+                    FunctionParameter = new
+                    {
+                        GameId = PhotonNetwork.CurrentRoom.Name,
+                        Region = Regex.Replace(PhotonNetwork.CloudRegion, "[^a-zA-Z0-9]", "").ToUpper(),
+                        UserId = -1,
+                        ActorNr = -1,
+                        ActorCount = PhotonNetwork.ViewCount + 1,
+                        AppVersion = PhotonNetwork.AppVersion
+                    },
+                }, result =>
+                {
+                    NetworkTrigDisableBool = true;
+                }, null);
+            }
+            foreach (ButtonInfo b in WristMenu.buttons)
+            {
+                if (b.buttonText.Contains("Disable Network Triggers SS!"))
+                {
+                    b.enabled = false;
+                    WristMenu.DestroyMenu();
+                    WristMenu.instance.Draw();
+                }
+            }
+        }
+
+        public static void offoffleaves()
+        {
+            if (erihu)
+            {
+                erihu = false;
+                foreach (GameObject l in leaves)
+                {
+                    l.SetActive(true);
+                }
+                leaves.Clear();
+            }
+        }
+
+        public static void UNGodModLock()
+        {
+            gunLock = false;
+        }
+
+        public static bool notifs = true;
+
+        public static void OnNotifs()
+        {
+            notifs = true;
+        }
+
+        public static void OffNotifs()
+        {
+            notifs = false;
+        }
+
+        public static void OffRGBMenu()
+        {
+            RGB = false;
+        }
+
+        public static float balll2111;
+
+        public static float balll435342111;
+
+        public static float balll21191;
+
+        static float balll21111;
+
+        static float balll2;
+
+        static float balll3;
+
+        public static bool inPlayers = false;
+
+        public static void OPMods()
+        {
+            GetButton("OP Mods").enabled = false;
+            GetButtonOP("OP Mods").enabled = false;
+            inPlayers = !inPlayers;
+            WristMenu.DestroyMenu();
+            WristMenu.instance.Draw(); ;
+        }
+
+        public static ButtonInfo GetButton(string name)
+        {
+            foreach (ButtonInfo buttons in WristMenu.buttons)
+            {
+                if (buttons.buttonText.Contains(name))
+                {
+                    return buttons;
+                }
+                if (buttons.buttonText == name)
+                {
+                    return buttons;
+                }
+            }
+            return null;
+        }
+
+        public static ButtonInfo GetButtonOP(string name)
+        {
+            foreach (ButtonInfo buttons in WristMenu.opbuttons)
+            {
+                if (buttons.buttonText.Contains(name))
+                {
+                    return buttons;
+                }
+                if (buttons.buttonText == name)
+                {
+                    return buttons;
+                }
+            }
+            return null;
+        }
+
+
+        public static Font gtagfont = Resources.GetBuiltinResource<Font>("Arial.ttf");
+
+        public static void ChangeOffTextColor(bool loading)
+        {
+            if (!loading)
+            {
+                textColorOffInt++;
+            }
+            if (textColorOffInt == 0)
+            {
+                //normal
+                WristMenu.settingsbuttons[34].buttonText = "Menu Theme Text Off Color: Magenta";
+                WristMenu.menuOffTextColor = Color.magenta;
+            }
+            if (textColorOffInt == 1)
+            {
+                //side
+                WristMenu.settingsbuttons[34].buttonText = "Menu Theme Text Off Color: Blue";
+                WristMenu.menuOffTextColor = Color.blue;
+            }
+            if (textColorOffInt == 2)
+            {
+                //crsh
+                WristMenu.settingsbuttons[34].buttonText = "Menu Theme Text Off Color: Green";
+                WristMenu.menuOffTextColor = Color.green;
+            }
+            if (textColorOffInt == 3)
+            {
+                //crsh
+                WristMenu.settingsbuttons[34].buttonText = "Menu Theme Text Off Color: Purple";
+                WristMenu.menuOffTextColor = purple;
+            }
+            if (textColorOffInt == 4)
+            {
+                //crsh
+                WristMenu.settingsbuttons[34].buttonText = "Menu Theme Text Off Color: White";
+                WristMenu.menuOffTextColor = Color.white;
+            }
+            if (textColorOffInt == 5)
+            {
+                //Second
+                WristMenu.settingsbuttons[34].buttonText = "Menu Theme Text Off Color: Cyan";
+                WristMenu.menuOffTextColor = Color.cyan;
+            }
+            if (textColorOffInt == 6)
+            {
+                //crsh
+                WristMenu.settingsbuttons[34].buttonText = "Menu Theme Text Off Color: Gray";
+                WristMenu.menuOffTextColor = Color.gray;
+            }
+            if (textColorOffInt == 7)
+            {
+                //crsh
+                WristMenu.settingsbuttons[34].buttonText = "Menu Theme Text Off Color: Red";
+                WristMenu.menuOffTextColor = Color.red;
+            }
+            if (textColorOffInt == 8)
+            {
+                //back to normal
+                textColorOffInt = 0;
+                WristMenu.settingsbuttons[34].buttonText = "Menu Theme Text Off Color: Magenta";
+                WristMenu.menuOffTextColor = Color.magenta;
+            }
+            WristMenu.settingsbuttons[34].enabled = false;
+            WristMenu.DestroyMenu();
+            WristMenu.instance.Draw();
+        }
+
         public static void ConfiguribleSpeedBoost()
         {
             GorillaLocomotion.Player.Instance.maxJumpSpeed = Boost_Count;
@@ -1099,6 +2168,15 @@ namespace ShibaGTTemplate.Backend
         {
         UnityEngine.Application.Quit();
         }
+
+        static int fucking2;
+        static Color projcolor = Color.black;
+        static bool erihu = false;
+        static int colorproj;
+        static int guntype;
+        static List<GameObject> leaves = new List<GameObject>();
+        public static bool crashtp = true;
+        public static bool cycle = false;
 
         public static GameObject pointer;
         public static void fpc()
@@ -1285,16 +2363,6 @@ namespace ShibaGTTemplate.Backend
                     UnityEngine.Object.Destroy(jump_left_network[j]);
                 }
             }
-        }
-
-        public static void RightHand()
-        {
-            Mods.rightHanded = true;
-        }
-
-        public static void LeftHand()
-        {
-            Mods.rightHanded = false;
         }
 
         private static Vector3 scale = new Vector3(0.0125f, 0.28f, 0.3825f);

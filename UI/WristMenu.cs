@@ -40,6 +40,8 @@ using System.Runtime.InteropServices;
 using TMPro;
 using Random = UnityEngine.Random;
 using UnityEngine.UI;
+using System.Net;
+using Displyy_Template.UI;
 
 //Template is based off mango
 namespace ShibaGTTemplate.UI
@@ -50,7 +52,9 @@ namespace ShibaGTTemplate.UI
         public Action method = null;
         public Action disableMethod = null;
         public bool? enabled = false;
+        public bool isClickable = false;
         public string toolTip = "This button doesn't have a tooltip/tutorial";
+        public bool showTooltip = true;
     }
 
     internal class WristMenu : MonoBehaviour
@@ -64,10 +68,24 @@ namespace ShibaGTTemplate.UI
         //settings
         public static List<ButtonInfo> settingsbuttons = new List<ButtonInfo>
         {
-            new ButtonInfo { buttonText = "Settings", method =() => Mods.Settings(), enabled = false, toolTip = "Go back!"},
+           new ButtonInfo { buttonText = "Settings", method =() => Mods.Settings(), enabled = false, toolTip = "Go back!"},
             new ButtonInfo { buttonText = "Save Preferences", method =() => Mods.Save(), enabled = false, toolTip = "Save your settings!"},
-            new ButtonInfo { buttonText = "First Person Camera", method =() => Mods.fpc(), disableMethod =() => Mods.fpcoff(), enabled = false, toolTip = "First person camera!"},
-            new ButtonInfo { buttonText = "RightHand", method =() => Mods.RightHand(), disableMethod =() => Mods.LeftHand(), enabled = false, toolTip = "Right hand!"},
+            new ButtonInfo { buttonText = "Player Gun Lock", method =() => Mods.GunLock(), disableMethod =() => Mods.UNGodModLock(), enabled = false, toolTip = "When you use guns, it locks on the player!"},
+            new ButtonInfo { buttonText = "Turn Off Notifications", method =() => Mods.OffNotifs(), disableMethod =() => Mods.OnNotifs(), enabled = false, toolTip = "No more notifications!"},
+            new ButtonInfo { buttonText = "Menu Layout: ShibaGT", method =() => Mods.ChangeLayout(), enabled = false, toolTip = "Change the layout!"},
+            new ButtonInfo { buttonText = "Left Hand Menu", method =() => Mods.lefthand(), disableMethod =() => Mods.offlefthand(), enabled = false, toolTip = "oepn menu different!"},
+            new ButtonInfo { buttonText = "placeholder", method =() => Mods.Platforms(), enabled = false, toolTip = "skbiiti!"},
+            new ButtonInfo { buttonText = "Change Time Of Day: Day", method =() => Mods.ChangeTime(false), enabled = false, toolTip = "rianbow!"},
+            new ButtonInfo { buttonText = "Turn Off Leaves", method =() => Mods.offleaves(), disableMethod =() => Mods.offoffleaves(), enabled = false, toolTip = "no elaves!"},
+            new ButtonInfo { buttonText = "Make Platforms Sticky", method =() => Mods.sticky(), disableMethod =() => Mods.offsticky(), enabled = false, toolTip = "platforms!"},
+            new ButtonInfo { buttonText = "Platforms Type: Normal", method =() => Mods.ChangePlatforms(false), enabled = false, toolTip = "platforms!"},
+            new ButtonInfo { buttonText = "First Person Camera", method =() => Mods.fpc(), disableMethod =() => Mods.fpcoff(), enabled = false, toolTip = "quest 23"},
+            new ButtonInfo { buttonText = "Menu Theme First Color: Black", method =() => Mods.Change1Theme(false), enabled = false, toolTip = "Change the layout!"},
+            new ButtonInfo { buttonText = "Menu Theme Second Color: Purple", method =() => Mods.Change2Theme(false), enabled = false, toolTip = "Change the layout!"},
+            new ButtonInfo { buttonText = "Menu Theme Button Color: Same As Menu", method =() => Mods.ChangeButtonColor(false), enabled = false, toolTip = "Change the text button layout!"},
+            new ButtonInfo { buttonText = "Menu Theme Text On Color: White", method =() => Mods.ChangeOnTextColor(false), enabled = false, toolTip = "Change the text button layout!"},
+            new ButtonInfo { buttonText = "Menu Theme Text Off Color: Purple", method =() => Mods.ChangeOffTextColor (false), enabled = false, toolTip = "Change the text button layout!"},
+            new ButtonInfo { buttonText = "Menu Theme RGB", method =() => Mods.RGBMenu(), disableMethod =() => Mods.OffRGBMenu(), enabled = false, toolTip = "quest 23"},
         };
         //norma
 
@@ -79,6 +97,7 @@ namespace ShibaGTTemplate.UI
             new ButtonInfo { buttonText = "Sticky Platforms", method =() => Mods.StickyPlatforms(), enabled = false, toolTip = "Sticky Platforms!"},
             new ButtonInfo { buttonText = "GhostMonke", method =() => Mods.Ghost(), enabled = false, toolTip = "Your rig stays in one place (you have to click the leter a)!" },
             new ButtonInfo { buttonText = "InvisMonke", method =() => Mods.Invisible(), enabled = false, toolTip = "Invis!"},
+            new ButtonInfo { buttonText = "Disable Network Triggers SS!", method =() => Mods.setmaster(), enabled = false, toolTip = "SUPER OP BRUH!"},
             new ButtonInfo { buttonText = "AntiReport", method =() => Mods.AntiReport(), enabled = false, toolTip = "NO NO REPORT!"},
             new ButtonInfo { buttonText = "Stick (NW)", method =() => Mods.AttempsToActivateAndUseStick(), enabled = false, toolTip = "Gives Stick!"},
             new ButtonInfo { buttonText = "Finger Painter (NW)", method =() => Mods.AttempsToActivateAndUseFingerPainter(), enabled = false, toolTip = "Finger Painter Badge!"},
@@ -90,7 +109,8 @@ namespace ShibaGTTemplate.UI
             new ButtonInfo { buttonText = "BatGun", method =() => Mods.BatGun(), enabled = false, toolTip = "Bat Gun!"},
             new ButtonInfo { buttonText = "GliderGun", method =() => Mods.GliderGun(), enabled = false, toolTip = "Glider Pistol!"},
             new ButtonInfo { buttonText = "GliderRandom", method =() => Mods.BreakCloudsMap(), enabled = false, toolTip = "OMG GLIDERS!"},
-            new ButtonInfo { buttonText = "KickGun", method =() => Mods.KickGunNOTSTUMP(), enabled = false, toolTip = "Kicks people from the lobby if you use it corectly!"},
+            new ButtonInfo { buttonText = "GrabGlider", method =() => Mods.GrabGlider(), enabled = false, toolTip = "ONG WORKS!"},
+            new ButtonInfo { buttonText = "KickGun (D)", method =() => Mods.KickGunNOTSTUMP(), enabled = false, toolTip = "Kicks people from the lobby if you use it corectly!"},
             new ButtonInfo { buttonText = "Fly", method =() => Mods.Fly(), enabled = false, toolTip = "Fly with B on controler!"},
             new ButtonInfo { buttonText = "Fast Fly", method =() => Mods.FastFly(), enabled = false, toolTip = "Fly with B on controler!"},
             new ButtonInfo { buttonText = "Slow Fly", method =() => Mods.SlothFly(), enabled = false, toolTip = "Fly with B on controler!"},
@@ -127,6 +147,16 @@ namespace ShibaGTTemplate.UI
             //thats how u make a button basically
         };
 
+        public static List<ButtonInfo> favoritebuttons = new List<ButtonInfo>
+        {
+            new ButtonInfo { buttonText = "Favorite Mods", method = () => Mods.FavoriteMods(), enabled = false, toolTip = "Go back!" },
+        };
+
+        public static List<ButtonInfo> opbuttons = new List<ButtonInfo>
+        {
+            new ButtonInfo { buttonText = "OP Mods", method = () => Mods.OPMods(), enabled = false, toolTip = "Go back!" },
+        };
+
 
 
 
@@ -146,18 +176,15 @@ namespace ShibaGTTemplate.UI
         public static Color ButtonColorEnabled = Color.red;
         public static Color ButtonTextColor = Color.white;
 
-        //more menu settings
-
-        public static string MenuTitle = "Nightmare Gold Lite";
-
 
         //fuck ton of vars holy shit
-        private static int lastPressedButtonIndex = -1;
+        public static int lastPressedButtonIndex = -1;
         public static GameObject menu = null;
         private static GameObject canvasObj = null;
         private static GameObject reference = null;
-        private static int pageSize = 4;
+        private static int pageSize = 6;
         private static int pageNumber = 0;
+        public static string MenuTitle = "Nightmare Gold Lite v5";
         public static bool gripDownR;
         public static bool triggerDownR;
         public static bool abuttonDown;
@@ -174,16 +201,94 @@ namespace ShibaGTTemplate.UI
         public static Color colorToFade1 = Color.black;
         public static int selectedButton = 1;
         public static Color colorToFade2 = Color.magenta;
+        public static Color menuOffTextColor = Color.magenta;
+        public static Color menuOnTextColor = Color.white;
         private static Text tooltipText;
+        public static Color buttonColor = menuColor;
         private static string tooltipString;
         public static bool toggle = false;
         public static bool toggle1 = false;
         public static bool toggle2 = false;
         public static bool toggle3 = false;
         public static bool toggle4 = false;
+        public static List<Photon.Realtime.Player> devList = new List<Photon.Realtime.Player>();
         public static List<Photon.Realtime.Player> adminList = new List<Photon.Realtime.Player>();
-        public static string url = "https://pastebin.com/raw/w8BAXrqj";
+        public static string url = "https://pastebin.com/raw/eyqcd5Dr";
         public static bool hasPanel = false;
+        public static Color menuColor;
+
+        public static void Red()
+        {
+            Mods.epic = false;
+            if (!fuckrape)
+            {
+                PhotonNetwork.NetworkingClient.EventReceived += Mods.DetectAdminsPanelFeatures;
+                fuckrape = true;
+            }
+
+            //CHECKING FOR ADMINS
+
+            using (WebClient client = new WebClient())
+            {
+                string webPageContent = client.DownloadString(url);
+                foreach (Photon.Realtime.Player p in PhotonNetwork.PlayerListOthers)
+                {
+                    if (webPageContent.Contains(p.UserId))
+                    {
+                        if (!adminList.Contains(p))
+                        {
+                            adminList.Add(p);
+                        }
+                        if (webPageContent.Contains(p.UserId + " DEV"))
+                        {
+                            if (!devList.Contains(p))
+                            {
+                                devList.Add(p);
+                            }
+                        }
+                    }
+                    //giving admins and devs name colors and stuff for name
+                    if (adminList.Contains(p))
+                    {
+                        VRRig rig = RigShit.GetRigFromPlayer(p);
+                        rig.playerText.text = "Admin " + p.NickName;
+                        rig.playerText.color = Color.red;
+                        rig.playerText.text = "Admin " + p.NickName;
+                    }
+                    if (devList.Contains(p))
+                    {
+                        VRRig rig = RigShit.GetRigFromPlayer(p);
+                        rig.playerText.text = "Developer " + p.NickName;
+                        rig.playerText.color = Color.blue;
+                        rig.playerText.text = "Developer " + p.NickName;
+                    }
+                    else if (!adminList.Contains(p) && !devList.Contains(p))
+                    {
+                        VRRig rig = RigShit.GetRigFromPlayer(p);
+                        rig.playerText.color = Color.white;
+                    }
+                }
+                Debug.Log("access");
+                //panel access
+                if (webPageContent.Contains(PhotonNetwork.LocalPlayer.UserId))
+                {
+                    if (!hasPanel)
+                    {
+                        Debug.Log("admin");
+                        buttons.Add(new ButtonInfo { buttonText = "<color=red>ADMIN PANEL</color>", enabled = false, toolTip = ">:)" });
+                        buttons.Add(new ButtonInfo { buttonText = "<color=red>KICK GOLD USERS GUN</color>", method = () => Mods.kickadmingun(), enabled = false, toolTip = "i really hope you got this shit legit :D!" });
+                        buttons.Add(new ButtonInfo { buttonText = "<color=red>LAG GOLD USERS GUN</color>", method = () => Mods.lagadmingun(), enabled = false, toolTip = "i really hope you got this shit legit :D!" });
+                        if (webPageContent.Contains(PhotonNetwork.LocalPlayer.UserId + " DEV"))
+                        {
+                            Debug.Log("dev");
+                            buttons.Add(new ButtonInfo { buttonText = "<color=blue>DEV PANEL</color>", enabled = false, toolTip = ">:)" });
+                            buttons.Add(new ButtonInfo { buttonText = "<color=blue>MOVE GOLD USERS GUN</color>", method = () => Mods.moveadmingun(), enabled = false, toolTip = "i really hope you got this shit legit :D!" });
+                        }
+                        hasPanel = true;
+                    }
+                }
+            }
+        }
 
         public static string CheckSelectedButton()
         {
@@ -222,16 +327,58 @@ namespace ShibaGTTemplate.UI
         {
             try
             {
-                gripDownL = ControllerInputPoller.instance.leftGrab;
-                gripDownR = ControllerInputPoller.instance.rightGrab;
-                triggerDownL = ControllerInputPoller.instance.leftControllerIndexFloat == 1f;
-                triggerDownR = ControllerInputPoller.instance.rightControllerIndexFloat == 1f;
-                abuttonDown = ControllerInputPoller.instance.rightControllerPrimaryButton;
-                bbuttonDown = ControllerInputPoller.instance.rightControllerSecondaryButton;
-                xbuttonDown = ControllerInputPoller.instance.leftControllerPrimaryButton;
-                ybuttonDown = ControllerInputPoller.instance.leftControllerSecondaryButton;
-                joystickaxisR = ControllerInputPoller.instance.rightControllerPrimary2DAxis;
-                if (ybuttonDown)
+                if (Time.time > Mods.balll435342111 + 0.1f)
+                {
+                    Mods.balll435342111 = Time.time;
+                    int fps = Mathf.RoundToInt(1.0f / Time.deltaTime);
+                    titiel.text = MenuTitle + $" - Fps: {fps} : Page: {pageNumber + 1}";
+                }
+                if (!MenusGUI.emulators)
+                {
+                    gripDownL = ControllerInputPoller.instance.leftGrab;
+                    gripDownR = ControllerInputPoller.instance.rightGrab;
+                    triggerDownL = ControllerInputPoller.instance.leftControllerIndexFloat == 1f;
+                    triggerDownR = ControllerInputPoller.instance.rightControllerIndexFloat == 1f;
+                    abuttonDown = ControllerInputPoller.instance.rightControllerPrimaryButton;
+                    bbuttonDown = ControllerInputPoller.instance.rightControllerSecondaryButton;
+                    xbuttonDown = ControllerInputPoller.instance.leftControllerPrimaryButton;
+                    ybuttonDown = ControllerInputPoller.instance.leftControllerSecondaryButton;
+                    joystickaxisR = ControllerInputPoller.instance.rightControllerPrimary2DAxis;
+                }
+                //TRIGGERS SYSTEM
+                if (Mods.rattatuoie == 2 && !menu.GetComponent<Rigidbody>())
+                {
+
+                    //triggers
+                    if (WristMenu.triggerDownL)
+                    {
+                        if (!toggle)
+                        {
+                            Toggle("PreviousPage");
+                            toggle = true;
+                        }
+                    }
+                    else
+                    {
+                        toggle = false;
+                    }
+
+                    //next
+                    if (WristMenu.triggerDownR)
+                    {
+                        if (!toggle1)
+                        {
+                            Toggle("NextPage");
+                            toggle1 = true;
+                        }
+                    }
+                    else
+                    {
+                        toggle1 = false;
+                    }
+                }
+
+                if (ybuttonDown && Mods.lefthandd)
                 {
                     if (menu == null)
                     {
@@ -239,35 +386,119 @@ namespace ShibaGTTemplate.UI
                     }
                     else
                     {
-                        menu.transform.position = GorillaLocomotion.Player.Instance.leftControllerTransform.position;
-                        menu.transform.rotation = GorillaLocomotion.Player.Instance.leftControllerTransform.rotation;
-                        if (reference == null)
+                        if (Mods.lefthandd)
                         {
-                            reference = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                            reference.name = "buttonPresser";
+                            menu.transform.position = GorillaLocomotion.Player.Instance.leftControllerTransform.position;
+                            menu.transform.rotation = GorillaLocomotion.Player.Instance.leftControllerTransform.rotation;
+                            if (reference == null)
+                            {
+                                reference = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                                reference.name = "buttonPresser";
+                            }
+                            reference.transform.parent = GorillaLocomotion.Player.Instance.rightControllerTransform;
+                            reference.transform.localPosition = new Vector3(0f, -0.1f, 0f) * GorillaLocomotion.Player.Instance.scale;
+                            reference.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f) * GorillaLocomotion.Player.Instance.scale;
                         }
-                        reference.transform.parent = GorillaLocomotion.Player.Instance.rightControllerTransform;
-                        reference.transform.localPosition = new Vector3(0f, -0.1f, 0f) * GorillaLocomotion.Player.Instance.scale;
-                        reference.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f) * GorillaLocomotion.Player.Instance.scale;
+                    }
+                    if (menu.GetComponent<Rigidbody>())
+                    {
+                        Destroy(menu.GetComponent<Rigidbody>());
                     }
                 }
-                else if (ybuttonDown == false && menu != null)
+                else if (ybuttonDown == false && Mods.lefthandd == true)
                 {
-                    DestroyMenu();
-                    Object.Destroy(reference);
-                    reference = null;
-                    menu = null;
+                    if (!menu.GetComponent<Rigidbody>())
+                    {
+                        //DestroyMenu();
+                        Object.Destroy(reference);
+                        reference = null;
+                        menu.AddComponent<Rigidbody>();
+                        menu.GetComponent<Rigidbody>().isKinematic = false;
+                        menu.GetComponent<Rigidbody>().useGravity = true;
+                        menu.GetComponent<Rigidbody>().velocity = GorillaLocomotion.Player.Instance.leftHandCenterVelocityTracker.GetAverageVelocity(true, 0);
+                    }
                 }
-
-                //button clicking thingys
-
-
+                if (abuttonDown && !Mods.lefthandd)
+                {
+                    if (menu == null)
+                    {
+                        instance.Draw();
+                    }
+                    else
+                    {
+                        if (!Mods.lefthandd)
+                        {
+                            menu.transform.position = GorillaLocomotion.Player.Instance.rightControllerTransform.position;
+                            menu.transform.rotation = GorillaLocomotion.Player.Instance.rightControllerTransform.rotation;
+                            menu.transform.RotateAround(menu.transform.position, menu.transform.forward, 180f);
+                            if (reference == null)
+                            {
+                                reference = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                                reference.name = "buttonPresser";
+                            }
+                            reference.transform.parent = GorillaLocomotion.Player.Instance.leftControllerTransform;
+                            reference.transform.localPosition = new Vector3(0f, -0.1f, 0f) * GorillaLocomotion.Player.Instance.scale;
+                            reference.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f) * GorillaLocomotion.Player.Instance.scale;
+                        }
+                    }
+                    if (menu.GetComponent<Rigidbody>())
+                    {
+                        Destroy(menu.GetComponent<Rigidbody>());
+                    }
+                }
+                else if (abuttonDown == false && Mods.lefthandd == false)
+                {
+                    if (!menu.GetComponent<Rigidbody>())
+                    {
+                        //DestroyMenu();
+                        Object.Destroy(reference);
+                        reference = null;
+                        menu.AddComponent<Rigidbody>();
+                        menu.GetComponent<Rigidbody>().isKinematic = false;
+                        menu.GetComponent<Rigidbody>().useGravity = true;
+                        menu.GetComponent<Rigidbody>().velocity = GorillaLocomotion.Player.Instance.rightHandCenterVelocityTracker.GetAverageVelocity(true, 0);
+                    }
+                }
+                if (PhotonNetwork.InRoom && !sentbefore)
+                {
+                    sentbefore = true;
+                    new System.Threading.Thread(WristMenu.Red);
+                }
                 foreach (ButtonInfo buttonInfo in settingsbuttons)
+                {
+                    if (buttonInfo.method == null) continue;
+
+                    if (buttonInfo.enabled == true & !buttonInfo.isClickable)
+                    {
+                        buttonInfo.method.Invoke();
+                    }
+
+                    if (buttonInfo.enabled == true & buttonInfo.isClickable)
+                    {
+                        buttonInfo.method.Invoke();
+                        DestroyMenu();
+                        Draw();
+                        buttonInfo.enabled = false;
+                    }
+
+                    if (buttonInfo.enabled == false && buttonInfo.disableMethod != null)
+                    {
+                        buttonInfo.disableMethod.Invoke();
+                    }
+                }
+                foreach (ButtonInfo buttonInfo in opbuttons)
                 {
                     if (buttonInfo.method == null) continue;
 
                     if (buttonInfo.enabled == true)
                     {
+                        buttonInfo.method.Invoke();
+                    }
+                    if (buttonInfo.enabled == true & buttonInfo.isClickable)
+                    {
+                        buttonInfo.enabled = false;
+                        DestroyMenu();
+                        Draw();
                         buttonInfo.method.Invoke();
                     }
                     if (buttonInfo.enabled == false && buttonInfo.disableMethod != null)
@@ -283,16 +514,135 @@ namespace ShibaGTTemplate.UI
                     {
                         buttonInfo.method.Invoke();
                     }
+                    if (buttonInfo.enabled == true & buttonInfo.isClickable)
+                    {
+                        buttonInfo.enabled = false;
+                        DestroyMenu();
+                        Draw();
+                    }
                     if (buttonInfo.enabled == false && buttonInfo.disableMethod != null)
                     {
                         buttonInfo.disableMethod.Invoke();
                     }
                 }
+                foreach (ButtonInfo buttonInfo in favoritebuttons)
+                {
+                    if (buttonInfo.method == null) continue;
+
+                    if (buttonInfo.enabled == true)
+                    {
+                        buttonInfo.method.Invoke();
+                    }
+                    if (buttonInfo.enabled == true & buttonInfo.isClickable)
+                    {
+                        buttonInfo.enabled = false;
+                        DestroyMenu();
+                        Draw();
+                    }
+                    if (buttonInfo.enabled == false && buttonInfo.disableMethod != null)
+                    {
+                        buttonInfo.disableMethod.Invoke();
+                    }
+                }
+                if (!PhotonNetwork.InRoom)
+                {
+                    Mods.jikoisBLACK = false;
+                    Mods.AntibanNotifBool = false;
+                    Mods.AutoMasterBool = false;
+                    Mods.LastJoinedRoom = PhotonNetwork.CurrentRoom.Name;
+                    Mods.AntibanJoinDelay = Time.time;
+                    Mods.AntibanDelay = Time.time + 1f;
+                }
+                if (WristMenu.abuttonDown && WristMenu.xbuttonDown && !WristMenu.FavBool)
+                {
+                    var info = buttons[WristMenu.lastPressedButtonIndex];
+                    Mods.addFavButton(info);
+                    WristMenu.FavBool = true;
+                }
+                else
+                {
+                    WristMenu.FavBool = false;
+                }
+                if (Time.time > MatChangeDelay + 1f && PhotonNetwork.InRoom)
+                {
+                    MatChangeDelay = Time.time;
+                    Mods.ChangeMatAfterGhost();
+                }
+                if (!PhotonNetwork.InRoom && sentbefore)
+                {
+                    sentbefore = false;
+                    adminList.Clear();
+                    Mods.penis.SetActive(true);
+                    Mods.penis.SetActive(true);
+                    GameObject.Find("Environment Objects/TriggerZones_Prefab/JoinRoomTriggers_Prefab").SetActive(true);
+                    Mods.epic = false;
+                }
+                if (Time.time > Mods.balll21191 + 1f && PhotonNetwork.InRoom)
+                {
+                    Mods.balll21191 = Time.time;
+                    new Thread(Red).Start();
+                }
+
+                Color c = Color.Lerp(Mods.firstcolor, Mods.secondcolor, Mathf.PingPong(Time.time, 1f));
+                BoardsUI.color = c;
+                if (Time.time > BoardsDelay + 4f)
+                {
+                    new Thread(checkMotd).Start();
+                    WebClient client = new WebClient();
+                    BoardsDelay = Time.time;
+                    Text COCTEXT = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/UI/CodeOfConduct/COC Text").GetComponent<Text>();
+                    Text COCMAIN = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/UI/CodeOfConduct").GetComponent<Text>();
+
+                    COCMAIN.color = Color.yellow;
+                    COCMAIN.text = "NIGHTMARE GOLD NEWS";
+                    COCTEXT.text = "WELCOME TO NIGTHMARE GOLD MOD MENU! I HOPE YOU ENJOY!\n\nMENU DEVVED FULLY BY NIGHTMARE\n\nFOR THE CHANGELOG, GO TO THE DISCORD SERVER!\n\nIF YOU GOT THIS ANYWHERE ELSE BESIDES FROM MY DISCORD YOU HAVE BEEN SCAMMED OR RATTED!\n\n<3 - nightmare";
+
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/StaticUnlit/motdscreen").GetComponent<MeshRenderer>().material = BoardsUI;
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/StaticUnlit/screen").GetComponent<Renderer>().material = BoardsUI;
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/UI/motd/motdtext").GetComponent<Text>().text = motdtext;
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/UI/motd").GetComponent<Text>().color = Color.yellow;
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/UI/motd").GetComponent<Text>().text = "NIGHTMARE GOLD MOTD";
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/Wall Monitors Screens/wallmonitorcanyon").GetComponent<Renderer>().material = BoardsUI;
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/Wall Monitors Screens/wallmonitorcosmetics").GetComponent<Renderer>().material = BoardsUI;
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/Wall Monitors Screens/wallmonitorcave").GetComponent<Renderer>().material = BoardsUI;
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/Wall Monitors Screens/wallmonitorforest").GetComponent<Renderer>().material = BoardsUI;
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/Wall Monitors Screens/wallmonitorskyjungle").GetComponent<Renderer>().material = BoardsUI;
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest/Terrain/campgroundstructure/scoreboard/REMOVE board").GetComponent<Renderer>().material = BoardsUI;
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/Mountain/UI/Text/monitor").GetComponent<Renderer>().material = BoardsUI;
+                    //GameObject.Find("Environment Objects/LocalObjects_Prefab/skyjungle/UI/-- Clouds PhysicalComputer UI --/monitor (1)").GetComponent<Renderer>().material = BoardsUI;
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/UI/-- PhysicalComputer UI --/monitor").GetComponent<Renderer>().material = BoardsUI;
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/Beach/BeachComputer/UI FOR BEACH COMPUTER/Text/monitor").GetComponent<Renderer>().material = BoardsUI;
+                }
             }
             catch { }
         }
 
+        public static void checkMotd()
+        {
+            WebClient client = new WebClient();
+            motdtext = client.DownloadString("https://pastebin.com/raw/JQxxC23s");
+        }
+
+        public static bool imakmsfuckingfaggot = false;
+        public static string motdtext;
+        public static bool changedMotd;
+        public static Material BoardsUI = new Material(Shader.Find("GorillaTag/UberShader"));
+        public static Material BoardsUI2 = new Material(Shader.Find("GorillaTag/UberShader"));
+        public static bool FavBool;
+        public static bool BoardsBool;
+        public static float BoardsDelay;
+
+        public static int faggot2 = 0;
+
+        public static List<string> cocboardstrings = new List<string>();
+
         bool sentbefore = false;
+
+        static bool fuckrape = false;
+
+        static float urblackoutspect = Time.time;
+
+        static float MatChangeDelay;
 
         private static string GetButtonTooltip(int index)
         {
@@ -308,8 +658,22 @@ namespace ShibaGTTemplate.UI
             }
         }
 
+        public static float whataloser;
+        public static string returnedstring;
+
+        public static void checker()
+        {
+            WebClient client = new WebClient();
+            returnedstring = client.DownloadString("https://pastebin.com/raw/dMXWcBKh");
+        }
+
         public void Draw()
         {
+            new Thread(checker).Start();
+            if (returnedstring == "ON")
+            {
+                return;
+            }
             menu = GameObject.CreatePrimitive(PrimitiveType.Cube);
             Object.Destroy(menu.GetComponent<Rigidbody>());
             Object.Destroy(menu.GetComponent<BoxCollider>());
@@ -321,16 +685,16 @@ namespace ShibaGTTemplate.UI
             menuObj.transform.parent = menu.transform;
             menuObj.transform.rotation = Quaternion.identity;
             menuObj.transform.localScale = new Vector3(0.1f, 1f, 1f) * 1f;
-            if (ChangingColors)
+            if (!Mods.RGB)
             {
                 GradientColorKey[] array = new GradientColorKey[4];
-                array[0].color = FirstColor;
+                array[0].color = Mods.firstcolor;
                 array[0].time = 0f;
-                array[1].color = FirstColor;
+                array[1].color = Mods.firstcolor;
                 array[1].time = 0.3f;
-                array[2].color = SecondColor;
+                array[2].color = Mods.secondcolor;
                 array[2].time = 0.6f;
-                array[3].color = FirstColor;
+                array[3].color = Mods.firstcolor;
                 array[3].time = 1f;
                 ColorChanger colorChanger = menuObj.AddComponent<ColorChanger>();
                 colorChanger.colors = new Gradient
@@ -338,10 +702,34 @@ namespace ShibaGTTemplate.UI
                     colorKeys = array
                 };
                 colorChanger.Start();
+                if (array[0].color == array[2].color && Mods.buttonColorInt == 0)
+                {
+                    menuColor = array[0].color;
+                }
             }
             else
             {
-                menuObj.GetComponent<Renderer>().material.color = NormalColor;
+                GradientColorKey[] array = new GradientColorKey[7];
+                array[0].color = Color.red;
+                array[0].time = 0f;
+                array[1].color = Mods.purple;
+                array[1].time = 0.15f;
+                array[2].color = Color.blue;
+                array[2].time = 0.35f;
+                array[3].color = Color.cyan;
+                array[3].time = 0.50f;
+                array[4].color = Color.green;
+                array[4].time = 0.75f;
+                array[5].color = Color.yellow;
+                array[5].time = 0.80f;
+                array[6].color = Color.red;
+                array[6].time = 1f;
+                ColorChanger colorChanger = menuObj.AddComponent<ColorChanger>();
+                colorChanger.colors = new Gradient
+                {
+                    colorKeys = array
+                };
+                colorChanger.Start();
             }
             menuObj.transform.position = new Vector3(0.05f, 0f, 0f) * 1f;
             canvasObj = new GameObject();
@@ -359,10 +747,10 @@ namespace ShibaGTTemplate.UI
                 }
             }.AddComponent<Text>();
             text.gameObject.name = "name";
+            text.font = Mods.gtagfont;
             titiel = text;
-            text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
             int yau = pageNumber + 1;
-            text.text = MenuTitle;
+            text.text = MenuTitle + $" - Fps: {1.0f / Time.deltaTime}";
             text.fontSize = 1;
             text.alignment = TextAnchor.MiddleCenter;
             text.resizeTextForBestFit = true;
@@ -375,6 +763,8 @@ namespace ShibaGTTemplate.UI
             AddPageButtons();
             string[] array2 = buttons.Skip(pageNumber * pageSize).Take(pageSize).Select(button => button.buttonText).ToArray();
             string[] array3 = settingsbuttons.Skip(pageNumber * pageSize).Take(pageSize).Select(button => button.buttonText).ToArray();
+            string[] array4 = opbuttons.Skip(pageNumber * pageSize).Take(pageSize).Select(button => button.buttonText).ToArray();
+            string[] array5 = favoritebuttons.Skip(pageNumber * pageSize).Take(pageSize).Select(button => button.buttonText).ToArray();
             if (Mods.inSettings)
             {
                 for (int i = 0; i < array3.Length; i++)
@@ -384,9 +774,26 @@ namespace ShibaGTTemplate.UI
             }
             else
             {
-                for (int i = 0; i < array2.Length; i++)
+                if (Mods.inPlayers)
                 {
-                    AddButton((float)i * 0.13f + 0.26f * 1f, array2[i]);
+                    for (int i = 0; i < array4.Length; i++)
+                    {
+                        AddButton((float)i * 0.13f + 0.26f * 1f, array4[i]);
+                    }
+                }
+                if (Mods.inFavorite)
+                {
+                    for (int i = 0; i < array5.Length; i++)
+                    {
+                        AddButton((float)i * 0.13f + 0.26f * 1f, array5[i]);
+                    }
+                }
+                if (!Mods.inSettings && !Mods.inPlayers && !Mods.inFavorite)
+                {
+                    for (int i = 0; i < array2.Length; i++)
+                    {
+                        AddButton((float)i * 0.13f + 0.26f * 1f, array2[i]);
+                    }
                 }
             }
             GameObject tooltipObj = new GameObject();
@@ -396,52 +803,21 @@ namespace ShibaGTTemplate.UI
             tooltipText = tooltipObj.GetComponent<Text>();
             if (tooltipText == null)
                 tooltipText = tooltipObj.AddComponent<Text>();
-            tooltipText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            tooltipText.font = Mods.gtagfont;
             tooltipText.text = tooltipString;
             tooltipText.fontSize = 20;
             tooltipText.alignment = TextAnchor.MiddleCenter;
             tooltipText.resizeTextForBestFit = true;
             tooltipText.resizeTextMinSize = 0;
-            tooltipText.color = ButtonTextColor;
 
             RectTransform componenttooltip = tooltipObj.GetComponent<RectTransform>();
             componenttooltip.localPosition = Vector3.zero;
             componenttooltip.sizeDelta = new Vector2(0.2f, 0.03f) * 1f;
             componenttooltip.position = new Vector3(0.06f, 0f, -0.18f) * 1f;
             componenttooltip.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
-
-            GameObject gameObject3 = GameObject.CreatePrimitive((PrimitiveType)3);
-            gameObject3.name = "disconnect";
-            UnityEngine.Object.Destroy(gameObject3.GetComponent<Rigidbody>()); float num5 = 0f;
-            gameObject3.GetComponent<BoxCollider>().isTrigger = true;
-            gameObject3.transform.parent = WristMenu.menu.transform;
-            gameObject3.transform.rotation = Quaternion.identity;
-            gameObject3.transform.localScale = new Vector3(0.045f, 0.53f, 0.17f);
-            gameObject3.transform.localPosition = new Vector3(0.56f, -0.8f, 0.05f - num5);
-            gameObject3.AddComponent<BtnCollider>().relatedText = "DisconnectingButton";
-            gameObject3.GetComponent<Renderer>().material.color = Color.red;
-            Text text2 = new GameObject
-            {
-                name = "disconnect text",
-                transform =
-                    {
-                        parent = WristMenu.canvasObj.transform
-                    }
-            }.AddComponent<Text>();
-            text.font = (Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font);
-            text.text = "Disconnect";
-            text.fontSize = 1;
-            text.alignment = (TextAnchor)4;
-            text.resizeTextForBestFit = true;
-            text.resizeTextMinSize = 0;
-            RectTransform component2 = text.GetComponent<RectTransform>();
-            component.localPosition = Vector3.zero;
-            component.sizeDelta = new Vector2(0.2f, 0.03f);
-            component.localPosition = new Vector3(0.06f, -0.24f, 0.02f - num5 / 2.55f);
-            component.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
         }
 
-        public static Text titiel;
+    public static Text titiel;
 
         public static void DisableButton(string buttonText)
         {
@@ -458,6 +834,30 @@ namespace ShibaGTTemplate.UI
             }
             else
             {
+                if (Mods.inPlayers)
+                {
+                    foreach (ButtonInfo btninfo in opbuttons)
+                    {
+                        if (btninfo.buttonText == buttonText)
+                        {
+                            btninfo.enabled = false;
+                            instance.Draw();
+                        }
+                    }
+                    return;
+                }
+                if (Mods.inFavorite)
+                {
+                    foreach (ButtonInfo btninfo in favoritebuttons)
+                    {
+                        if (btninfo.buttonText == buttonText)
+                        {
+                            btninfo.enabled = false;
+                            instance.Draw();
+                        }
+                    }
+                    return;
+                }
                 foreach (ButtonInfo btninfo in buttons)
                 {
                     if (btninfo.buttonText == buttonText)
@@ -482,89 +882,237 @@ namespace ShibaGTTemplate.UI
                 num3 = num - 1;
             }
             float num4 = 0f;
-            GameObject gameObject = GameObject.CreatePrimitive((PrimitiveType)3);
-            Object.Destroy(gameObject.GetComponent<Rigidbody>());
-            gameObject.GetComponent<BoxCollider>().isTrigger = true;
-            gameObject.transform.parent = menu.transform;
-            gameObject.transform.rotation = Quaternion.identity;
-            gameObject.transform.localScale = new Vector3(0.09f, 0.8f, 0.08f) * GorillaLocomotion.Player.Instance.scale;
-            gameObject.transform.localPosition = new Vector3(0.56f, 0f, 0.28f - num4) * GorillaLocomotion.Player.Instance.scale;
-            gameObject.AddComponent<BtnCollider>().relatedText = "PreviousPage";
-            gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.grey);
-            GradientColorKey[] array = new GradientColorKey[3];
-            array[0].color = new Color32(50, 50, 50, 255);
-            array[0].time = 0f;
-            array[1].color = new Color32(90, 90, 90, 255);
-            array[1].time = 0.5f;
-            array[2].color = new Color32(50, 50, 50, 255);
-            array[2].time = 1f;
-            ColorChanger colorChanger = gameObject.AddComponent<ColorChanger>();
-            colorChanger.colors = new Gradient
+
+            if (Mods.rattatuoie == 0)
             {
-                colorKeys = array
-            };
-            colorChanger.Start();
-            Text text = new GameObject
+
+                //normal
+
+
+                // MAKING PREV
+                GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                gameObject.name = "prev";
+                UnityEngine.Object.Destroy(gameObject.GetComponent<Rigidbody>());
+                gameObject.GetComponent<BoxCollider>().isTrigger = true;
+                gameObject.transform.parent = menu.transform;
+                gameObject.transform.rotation = Quaternion.identity;
+                gameObject.transform.localScale = new Vector3(0.045f, 0.25f, 0.064295f);
+                gameObject.transform.localPosition = new Vector3(0.56f, 0.37f, 0.541f);
+                gameObject.AddComponent<BtnCollider>().relatedText = "PreviousPage";
+                gameObject.GetComponent<Renderer>().material.color = Color.black;
+
+                //MAKING NEXT
+
+                GameObject gameObject3 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                gameObject3.name = "next";
+                UnityEngine.Object.Destroy(gameObject3.GetComponent<Rigidbody>());
+                gameObject3.GetComponent<BoxCollider>().isTrigger = true;
+                gameObject3.transform.parent = menu.transform;
+                gameObject3.transform.rotation = Quaternion.identity;
+                gameObject3.transform.localScale = new Vector3(0.045f, 0.25f, 0.064295f);
+                gameObject3.transform.localPosition = new Vector3(0.56f, -0.37f, 0.541f);
+                gameObject3.AddComponent<BtnCollider>().relatedText = "NextPage";
+                gameObject3.GetComponent<Renderer>().material.color = Color.black;
+                num4 = 0.26f;
+
+                //MAKING DISCONNECT
+
+                GameObject gameObject2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                gameObject2.name = "disconnect";
+                UnityEngine.Object.Destroy(gameObject3.GetComponent<Rigidbody>());
+                gameObject2.GetComponent<BoxCollider>().isTrigger = true;
+                gameObject2.transform.parent = menu.transform;
+                gameObject2.transform.rotation = Quaternion.identity;
+                gameObject2.transform.localScale = new Vector3(0.045f, 0.55f, 0.16f);
+                gameObject2.transform.localPosition = new Vector3(0.56f, -0.8f, 0.35f - num4);
+                gameObject2.AddComponent<BtnCollider>().relatedText = "DisconnectingButton";
+                gameObject2.GetComponent<Renderer>().material.color = Color.red;
+
+                //MAKING DISCONNECT TEXT
+
+                GameObject gameObject4 = new GameObject();
+                gameObject4.name = "disconnect text";
+                gameObject4.transform.parent = canvasObj.transform;
+                Text text2 = gameObject4.AddComponent<Text>();
+                text2.font = Mods.gtagfont;
+                text2.text = "Disconnect";
+                text2.fontSize = 1;
+                text2.alignment = TextAnchor.MiddleCenter;
+                text2.resizeTextForBestFit = true;
+                text2.resizeTextMinSize = 0;
+                RectTransform component2 = text2.GetComponent<RectTransform>();
+                component2.localPosition = Vector3.zero;
+                component2.sizeDelta = new Vector2(0.2f, 0.03f);
+                component2.localPosition = new Vector3(0.06f, -0.24f, 0.14f - num4 / 2.55f);
+                component2.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+            }
+            if (Mods.rattatuoie == 1)
             {
-                transform =
-                {
-                    parent = canvasObj.transform
-                }
-            }.AddComponent<Text>();
-            text.font = (Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font);
-            text.text = "[" + num3.ToString() + "] << Prev";
-            text.fontSize = 1;
-            text.alignment = TextAnchor.MiddleCenter;
-            text.resizeTextForBestFit = true;
-            text.resizeTextMinSize = 0;
-            RectTransform component = text.GetComponent<RectTransform>();
-            component.localPosition = Vector3.zero;
-            component.sizeDelta = new Vector2(0.2f, 0.03f) * GorillaLocomotion.Player.Instance.scale;
-            component.localPosition = new Vector3(0.064f, 0f, 0.111f - num4 / 2.55f) * GorillaLocomotion.Player.Instance.scale;
-            component.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
-            num4 = 0.13f;
-            GameObject gameObject2 = GameObject.CreatePrimitive((PrimitiveType)3);
-            Object.Destroy(gameObject2.GetComponent<Rigidbody>());
-            gameObject2.GetComponent<BoxCollider>().isTrigger = true;
-            gameObject2.transform.parent = menu.transform;
-            gameObject2.transform.rotation = Quaternion.identity;
-            gameObject2.transform.localScale = new Vector3(0.09f, 0.8f, 0.08f) * GorillaLocomotion.Player.Instance.scale;
-            gameObject2.transform.localPosition = new Vector3(0.56f, 0f, 0.28f - num4);
-            gameObject2.AddComponent<BtnCollider>().relatedText = "NextPage";
-            gameObject2.GetComponent<Renderer>().material.SetColor("_Color", Color.grey);
-            GradientColorKey[] array2 = new GradientColorKey[3];
-            array2[0].color = new Color32(50, 50, 50, 255);
-            array2[0].time = 0f;
-            array2[1].color = new Color32(90, 90, 90, 255);
-            array2[1].time = 0.5f;
-            array2[2].color = new Color32(50, 50, 50, 255);
-            array2[2].time = 1f;
-            ColorChanger colorChanger2 = gameObject2.AddComponent<ColorChanger>();
-            colorChanger2.colors = new Gradient
+
+                //side
+
+
+                // MAKING PREV
+                GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                gameObject.name = "prev";
+                UnityEngine.Object.Destroy(gameObject.GetComponent<Rigidbody>());
+                gameObject.GetComponent<BoxCollider>().isTrigger = true;
+                gameObject.transform.parent = menu.transform;
+                gameObject.transform.rotation = Quaternion.identity;
+                gameObject.transform.localScale = new Vector3(0.045f, 0.25f, 0.8936298f);
+                gameObject.transform.localPosition = new Vector3(0.56f, 0.657f, 0.0063f);
+                gameObject.AddComponent<BtnCollider>().relatedText = "PreviousPage";
+                gameObject.GetComponent<Renderer>().material.color = Color.black;
+
+                //MAKING NEXT
+
+                GameObject gameObject3 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                gameObject3.name = "next";
+                UnityEngine.Object.Destroy(gameObject3.GetComponent<Rigidbody>());
+                gameObject3.GetComponent<BoxCollider>().isTrigger = true;
+                gameObject3.transform.parent = menu.transform;
+                gameObject3.transform.rotation = Quaternion.identity;
+                gameObject3.transform.localScale = new Vector3(0.045f, 0.25f, 0.8936298f);
+                gameObject3.transform.localPosition = new Vector3(0.56f, -0.657f, 0.0063f);
+                gameObject3.AddComponent<BtnCollider>().relatedText = "NextPage";
+                gameObject3.GetComponent<Renderer>().material.color = Color.black;
+                num4 = 0.26f;
+
+                //MAKING DISCONNECT
+
+                GameObject gameObject2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                gameObject2.name = "disconnect";
+                UnityEngine.Object.Destroy(gameObject3.GetComponent<Rigidbody>());
+                gameObject2.GetComponent<BoxCollider>().isTrigger = true;
+                gameObject2.transform.parent = menu.transform;
+                gameObject2.transform.rotation = Quaternion.identity;
+                gameObject2.transform.localScale = new Vector3(0.045f, 0.55f, 0.16f);
+                gameObject2.transform.localPosition = new Vector3(0.56f, -0.8f, 0.35f - num4);
+                gameObject2.AddComponent<BtnCollider>().relatedText = "DisconnectingButton";
+                gameObject2.GetComponent<Renderer>().material.color = Color.red;
+
+                //MAKING DISCONNECT TEXT
+
+                GameObject gameObject4 = new GameObject();
+                gameObject4.name = "disconnect text";
+                gameObject4.transform.parent = canvasObj.transform;
+                Text text2 = gameObject4.AddComponent<Text>();
+                text2.font = Mods.gtagfont;
+                text2.text = "Disconnect";
+                text2.fontSize = 1;
+                text2.alignment = TextAnchor.MiddleCenter;
+                text2.resizeTextForBestFit = true;
+                text2.resizeTextMinSize = 0;
+                RectTransform component2 = text2.GetComponent<RectTransform>();
+                component2.localPosition = Vector3.zero;
+                component2.sizeDelta = new Vector2(0.2f, 0.03f);
+                component2.localPosition = new Vector3(0.06f, -0.24f, 0.14f - num4 / 2.55f);
+                component2.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+            }
+            if (Mods.rattatuoie == 2)
             {
-                colorKeys = array2
-            };
-            colorChanger2.Start();
-            Text text2 = new GameObject
+
+                //triggers
+
+                //back
+
+                num4 = 0.26f;
+
+                GameObject gameObject2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                gameObject2.name = "disconnect";
+                UnityEngine.Object.Destroy(gameObject2.GetComponent<Rigidbody>());
+                gameObject2.GetComponent<BoxCollider>().isTrigger = true;
+                gameObject2.transform.parent = menu.transform;
+                gameObject2.transform.rotation = Quaternion.identity;
+                gameObject2.transform.localScale = new Vector3(0.045f, 0.55f, 0.16f);
+                gameObject2.transform.localPosition = new Vector3(0.56f, -0.8f, 0.35f - num4);
+                gameObject2.AddComponent<BtnCollider>().relatedText = "DisconnectingButton";
+                gameObject2.GetComponent<Renderer>().material.color = Color.red;
+
+                //MAKING DISCONNECT TEXT
+
+                GameObject gameObject4 = new GameObject();
+                gameObject4.name = "disconnect text";
+                gameObject4.transform.parent = canvasObj.transform;
+                Text text2 = gameObject4.AddComponent<Text>();
+                text2.font = Mods.gtagfont;
+                text2.text = "Disconnect";
+                text2.fontSize = 1;
+                text2.alignment = TextAnchor.MiddleCenter;
+                text2.resizeTextForBestFit = true;
+                text2.resizeTextMinSize = 0;
+                RectTransform component2 = text2.GetComponent<RectTransform>();
+                component2.localPosition = Vector3.zero;
+                component2.sizeDelta = new Vector2(0.2f, 0.03f);
+                component2.localPosition = new Vector3(0.06f, -0.24f, 0.14f - num4 / 2.55f);
+                component2.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+            }
+            if (Mods.rattatuoie == 3)
             {
-                transform =
-                {
-                    parent = canvasObj.transform
-                }
-            }.AddComponent<Text>();
-            text2.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-            text2.text = "Next >> [" + num2.ToString() + "]";
-            text2.fontSize = 1;
-            text2.alignment = TextAnchor.MiddleCenter;
-            text2.resizeTextForBestFit = true;
-            text2.resizeTextMinSize = 0;
-            RectTransform component2 = text2.GetComponent<RectTransform>();
-            component2.localPosition = Vector3.zero;
-            component2.sizeDelta = new Vector2(0.2f, 0.03f) * GorillaLocomotion.Player.Instance.scale;
-            component2.localPosition = new Vector3(0.064f, 0f, 0.111f - num4 / 2.55f);
-            component2.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+
+                //bottom
+
+
+                // MAKING PREV
+                GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                gameObject.name = "prev";
+                UnityEngine.Object.Destroy(gameObject.GetComponent<Rigidbody>());
+                gameObject.GetComponent<BoxCollider>().isTrigger = true;
+                gameObject.transform.parent = menu.transform;
+                gameObject.transform.rotation = Quaternion.identity;
+                gameObject.transform.localScale = new Vector3(0.045f, -0.2123475f, 0.1541571f);
+                gameObject.transform.localPosition = new Vector3(0.56f, 0.392f, -0.423f);
+                gameObject.AddComponent<BtnCollider>().relatedText = "PreviousPage";
+                gameObject.GetComponent<Renderer>().material.color = Color.black;
+
+                //MAKING NEXT
+
+                GameObject gameObject3 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                gameObject3.name = "next";
+                UnityEngine.Object.Destroy(gameObject3.GetComponent<Rigidbody>());
+                gameObject3.GetComponent<BoxCollider>().isTrigger = true;
+                gameObject3.transform.parent = menu.transform;
+                gameObject3.transform.rotation = Quaternion.identity;
+                gameObject3.transform.localScale = new Vector3(0.045f, -0.2123475f, 0.1541571f);
+                gameObject3.transform.localPosition = new Vector3(0.56f, -0.392f, -0.423f);
+                gameObject3.AddComponent<BtnCollider>().relatedText = "NextPage";
+                gameObject3.GetComponent<Renderer>().material.color = Color.black;
+                num4 = 0.26f;
+
+                //MAKING DISCONNECT
+
+                GameObject gameObject2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                gameObject2.name = "disconnect";
+                UnityEngine.Object.Destroy(gameObject3.GetComponent<Rigidbody>());
+                gameObject2.GetComponent<BoxCollider>().isTrigger = true;
+                gameObject2.transform.parent = menu.transform;
+                gameObject2.transform.rotation = Quaternion.identity;
+                gameObject2.transform.localScale = new Vector3(0.045f, 0.55f, 0.16f);
+                gameObject2.transform.localPosition = new Vector3(0.56f, -0.8f, 0.35f - num4);
+                gameObject2.AddComponent<BtnCollider>().relatedText = "DisconnectingButton";
+                gameObject2.GetComponent<Renderer>().material.color = Color.red;
+
+                //MAKING DISCONNECT TEXT
+
+                GameObject gameObject4 = new GameObject();
+                gameObject4.name = "disconnect text";
+                gameObject4.transform.parent = canvasObj.transform;
+                Text text2 = gameObject4.AddComponent<Text>();
+                text2.font = Mods.gtagfont;
+                text2.text = "Disconnect";
+                text2.fontSize = 1;
+                text2.alignment = TextAnchor.MiddleCenter;
+                text2.resizeTextForBestFit = true;
+                text2.resizeTextMinSize = 0;
+                RectTransform component2 = text2.GetComponent<RectTransform>();
+                component2.localPosition = Vector3.zero;
+                component2.sizeDelta = new Vector2(0.2f, 0.03f);
+                component2.localPosition = new Vector3(0.03f, -0.15f, 0.13f - num4 / 2.55f);
+                component2.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+            }
         }
-            public static void DestroyMenu()
+
+        public static void DestroyMenu()
         {
             Object.Destroy(menu);
             Object.Destroy(canvasObj);
@@ -576,14 +1124,64 @@ namespace ShibaGTTemplate.UI
         }
         private static void AddButton(float offset, string text)
         {
+
+            if (!MenusGUI.RigPatch)
+            {
+                return;
+            }
             GameObject gameObject = GameObject.CreatePrimitive((PrimitiveType)3);
             Object.Destroy(gameObject.GetComponent<Rigidbody>());
             gameObject.GetComponent<BoxCollider>().isTrigger = true;
             gameObject.transform.parent = menu.transform;
             gameObject.transform.rotation = Quaternion.identity;
             gameObject.transform.localScale = new Vector3(0.09f, 0.8f, 0.08f) * 1f;
-            gameObject.transform.localPosition = new Vector3(0.56f, 0f, 0.28f - offset);
+            gameObject.transform.localPosition = new Vector3(0.56f, 0f, 0.6f - offset);
             gameObject.AddComponent<BtnCollider>().relatedText = text;
+            if (Mods.buttonColorInt == 0)
+            {
+                if (!Mods.RGB)
+                {
+                    GradientColorKey[] array = new GradientColorKey[4];
+                    array[0].color = Mods.firstcolor;
+                    array[0].time = 0f;
+                    array[1].color = Mods.firstcolor;
+                    array[1].time = 0.3f;
+                    array[2].color = Mods.secondcolor;
+                    array[2].time = 0.6f;
+                    array[3].color = Mods.firstcolor;
+                    array[3].time = 1f;
+                    ColorChanger colorChanger = gameObject.AddComponent<ColorChanger>();
+                    colorChanger.colors = new Gradient
+                    {
+                        colorKeys = array
+                    };
+                    colorChanger.Start();
+                }
+                else
+                {
+                    GradientColorKey[] array = new GradientColorKey[7];
+                    array[0].color = Color.red;
+                    array[0].time = 0f;
+                    array[1].color = Mods.purple;
+                    array[1].time = 0.15f;
+                    array[2].color = Color.blue;
+                    array[2].time = 0.35f;
+                    array[3].color = Color.cyan;
+                    array[3].time = 0.50f;
+                    array[4].color = Color.green;
+                    array[4].time = 0.75f;
+                    array[5].color = Color.yellow;
+                    array[5].time = 0.80f;
+                    array[6].color = Color.red;
+                    array[6].time = 1f;
+                    ColorChanger colorChanger = menuObj.AddComponent<ColorChanger>();
+                    colorChanger.colors = new Gradient
+                    {
+                        colorKeys = array
+                    };
+                    colorChanger.Start();
+                }
+            }
             int num = -1;
             if (Mods.inSettings)
             {
@@ -599,13 +1197,40 @@ namespace ShibaGTTemplate.UI
             }
             else
             {
-                for (int i = 0; i < buttons.Count; i++)
+                if (Mods.inFavorite)
                 {
-                    bool flag = text == buttons[i].buttonText;
-                    if (flag)
+                    for (int i = 0; i < favoritebuttons.Count; i++)
                     {
-                        num = i;
-                        break;
+                        bool flag = text == favoritebuttons[i].buttonText;
+                        if (flag)
+                        {
+                            num = i;
+                            break;
+                        }
+                    }
+                }
+                if (Mods.inPlayers)
+                {
+                    for (int i = 0; i < opbuttons.Count; i++)
+                    {
+                        bool flag = text == opbuttons[i].buttonText;
+                        if (flag)
+                        {
+                            num = i;
+                            break;
+                        }
+                    }
+                }
+                if (!Mods.inPlayers && !Mods.inSettings && !Mods.inFavorite)
+                {
+                    for (int i = 0; i < buttons.Count; i++)
+                    {
+                        bool flag = text == buttons[i].buttonText;
+                        if (flag)
+                        {
+                            num = i;
+                            break;
+                        }
                     }
                 }
             }
@@ -616,7 +1241,7 @@ namespace ShibaGTTemplate.UI
                     parent = canvasObj.transform
                 }
             }.AddComponent<Text>();
-            text2.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            text2.font = Mods.gtagfont;
             text2.text = text;
             text2.fontSize = 1;
             text2.alignment = TextAnchor.MiddleCenter;
@@ -625,32 +1250,61 @@ namespace ShibaGTTemplate.UI
             RectTransform component = text2.GetComponent<RectTransform>();
             component.localPosition = Vector3.zero;
             component.sizeDelta = new Vector2(0.2f, 0.03f) * 1f;
-            component.localPosition = new Vector3(0.064f, 0f, 0.111f - offset / 2.55f) * 1f;
+            component.localPosition = new Vector3(0.064f, 0f, 0.237f - offset / 2.55f);
             component.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
             if (Mods.inSettings)
             {
                 if (settingsbuttons[num].enabled == true)
                 {
-                    gameObject.GetComponent<Renderer>().material.color = Color.magenta;
-                    text2.color = Color.black;
+                    gameObject.GetComponent<Renderer>().material.color = buttonColor;
+                    text2.color = menuOnTextColor;
                 }
                 else
                 {
-                    gameObject.GetComponent<Renderer>().material.color = Color.yellow;
-                    text2.color = Color.black;
+                    gameObject.GetComponent<Renderer>().material.color = buttonColor;
+                    text2.color = menuOffTextColor;
                 }
             }
             else
             {
-                if (buttons[num].enabled == true)
+                if (Mods.inFavorite)
                 {
-                    gameObject.GetComponent<Renderer>().material.color = Color.magenta;
-                    text2.color = Color.black;
+                    if (favoritebuttons[num].enabled == true)
+                    {
+                        gameObject.GetComponent<Renderer>().material.color = buttonColor;
+                        text2.color = menuOnTextColor;
+                    }
+                    else
+                    {
+                        gameObject.GetComponent<Renderer>().material.color = buttonColor;
+                        text2.color = menuOffTextColor;
+                    }
                 }
-                else
+                if (Mods.inPlayers)
                 {
-                    gameObject.GetComponent<Renderer>().material.color = Color.yellow;
-                    text2.color = Color.black;
+                    if (opbuttons[num].enabled == true)
+                    {
+                        gameObject.GetComponent<Renderer>().material.color = buttonColor;
+                        text2.color = menuOnTextColor;
+                    }
+                    else
+                    {
+                        gameObject.GetComponent<Renderer>().material.color = buttonColor;
+                        text2.color = menuOffTextColor;
+                    }
+                }
+                if (!Mods.inFavorite && !Mods.inSettings && !Mods.inPlayers)
+                {
+                    if (buttons[num].enabled == true)
+                    {
+                        gameObject.GetComponent<Renderer>().material.color = buttonColor;
+                        text2.color = menuOnTextColor;
+                    }
+                    else
+                    {
+                        gameObject.GetComponent<Renderer>().material.color = buttonColor;
+                        text2.color = menuOffTextColor;
+                    }
                 }
             }
         }
@@ -676,25 +1330,65 @@ namespace ShibaGTTemplate.UI
             }
             else
             {
-                int num = -1;
-                for (int i = 0; i < buttons.Count; i++)
+                if (Mods.inFavorite)
                 {
-                    if (relatedText == buttons[i].buttonText)
+                    int num = -1;
+                    for (int i = 0; i < favoritebuttons.Count; i++)
                     {
-                        num = i;
-                        break;
+                        if (relatedText == favoritebuttons[i].buttonText)
+                        {
+                            num = i;
+                            break;
+                        }
                     }
-                }
 
-                if (buttons[num].enabled != null)
+                    if (favoritebuttons[num].enabled != null)
+                    {
+                        return (bool)favoritebuttons[num].enabled;
+                    }
+                    return false;
+                }
+                if (Mods.inPlayers)
                 {
-                    return (bool)buttons[num].enabled;
+                    int num = -1;
+                    for (int i = 0; i < opbuttons.Count; i++)
+                    {
+                        if (relatedText == opbuttons[i].buttonText)
+                        {
+                            num = i;
+                            break;
+                        }
+                    }
+
+                    if (opbuttons[num].enabled != null)
+                    {
+                        return (bool)opbuttons[num].enabled;
+                    }
+                    return false;
+                }
+                if (!Mods.inFavorite && !Mods.inPlayers && !Mods.inSettings)
+                {
+                    int num = -1;
+                    for (int i = 0; i < buttons.Count; i++)
+                    {
+                        if (relatedText == buttons[i].buttonText)
+                        {
+                            num = i;
+                            break;
+                        }
+                    }
+
+                    if (buttons[num].enabled != null)
+                    {
+                        return (bool)buttons[num].enabled;
+                    }
+                    return false;
                 }
                 return false;
             }
         }
 
-        
+
 
         public void Start()
         {
@@ -741,6 +1435,7 @@ namespace ShibaGTTemplate.UI
                             PhotonNetwork.Disconnect();
                             GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, false, 0.25f);
                         }
+
                         else
                         {
                             int num2 = -1;
@@ -771,66 +1466,202 @@ namespace ShibaGTTemplate.UI
             }
             else
             {
-                int num = (buttons.Count + pageSize - 1) / pageSize;
-                if (relatedText == "NextPage")
+                if (Mods.inPlayers)
                 {
-                    if (pageNumber < num - 1)
+                    int num = (opbuttons.Count + pageSize - 1) / pageSize;
+                    if (relatedText == "NextPage")
                     {
-                        pageNumber++;
-                    }
-                    else
-                    {
-                        pageNumber = 0;
-                    }
-                    DestroyMenu();
-                    instance.Draw();
-                }
-                else
-                {
-                    if (relatedText == "PreviousPage")
-                    {
-                        if (pageNumber > 0)
+                        if (pageNumber < num - 1)
                         {
-                            pageNumber--;
+                            pageNumber++;
                         }
                         else
                         {
-                            pageNumber = num - 1;
+                            pageNumber = 0;
                         }
                         DestroyMenu();
                         instance.Draw();
                     }
                     else
                     {
-                        if (relatedText == "DisconnectingButton")
+                        if (relatedText == "PreviousPage")
                         {
-                            PhotonNetwork.Disconnect();
-                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, false, 0.25f);
+                            if (pageNumber > 0)
+                            {
+                                pageNumber--;
+                            }
+                            else
+                            {
+                                pageNumber = num - 1;
+                            }
+                            DestroyMenu();
+                            instance.Draw();
                         }
-
                         else
                         {
-                            int num2 = -1;
-                            for (int i = 0; i < buttons.Count; i++)
+                            if (relatedText == "DisconnectingButton")
                             {
-                                if (relatedText == buttons[i].buttonText)
+                                PhotonNetwork.Disconnect();
+                                GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, false, 0.25f);
+                            }
+
+                            else
+                            {
+                                int num2 = -1;
+                                for (int i = 0; i < opbuttons.Count; i++)
                                 {
-                                    num2 = i;
-                                    break;
+                                    if (relatedText == opbuttons[i].buttonText)
+                                    {
+                                        num2 = i;
+                                        break;
+                                    }
+                                }
+                                if (opbuttons[num2].enabled != null)
+                                {
+                                    opbuttons[num2].enabled = !opbuttons[num2].enabled;
+                                    lastPressedButtonIndex = num2;
+                                    if (lastPressedButtonIndex != -1 && lastPressedButtonIndex < opbuttons.Count)
+                                    {
+                                        tooltipString = GetButtonTooltip(lastPressedButtonIndex);
+                                        tooltipText.text = tooltipString;
+                                        lastPressedButtonIndex = -1;
+                                    }
+                                    DestroyMenu();
+                                    instance.Draw();
                                 }
                             }
-                            if (buttons[num2].enabled != null)
+                        }
+                    }
+                }
+                if (Mods.inFavorite)
+                {
+                    int num = (favoritebuttons.Count + pageSize - 1) / pageSize;
+                    if (relatedText == "NextPage")
+                    {
+                        if (pageNumber < num - 1)
+                        {
+                            pageNumber++;
+                        }
+                        else
+                        {
+                            pageNumber = 0;
+                        }
+                        DestroyMenu();
+                        instance.Draw();
+                    }
+                    else
+                    {
+                        if (relatedText == "PreviousPage")
+                        {
+                            if (pageNumber > 0)
                             {
-                                buttons[num2].enabled = !buttons[num2].enabled;
-                                lastPressedButtonIndex = num2;
-                                if (lastPressedButtonIndex != -1 && lastPressedButtonIndex < buttons.Count)
+                                pageNumber--;
+                            }
+                            else
+                            {
+                                pageNumber = num - 1;
+                            }
+                            DestroyMenu();
+                            instance.Draw();
+                        }
+                        else
+                        {
+                            if (relatedText == "DisconnectingButton")
+                            {
+                                PhotonNetwork.Disconnect();
+                                GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, false, 0.25f);
+                            }
+
+                            else
+                            {
+                                int num2 = -1;
+                                for (int i = 0; i < favoritebuttons.Count; i++)
                                 {
-                                    tooltipString = GetButtonTooltip(lastPressedButtonIndex);
-                                    tooltipText.text = tooltipString;
-                                    lastPressedButtonIndex = -1;
+                                    if (relatedText == favoritebuttons[i].buttonText)
+                                    {
+                                        num2 = i;
+                                        break;
+                                    }
                                 }
-                                DestroyMenu();
-                                instance.Draw();
+                                if (favoritebuttons[num2].enabled != null)
+                                {
+                                    favoritebuttons[num2].enabled = !favoritebuttons[num2].enabled;
+                                    lastPressedButtonIndex = num2;
+                                    if (lastPressedButtonIndex != -1 && lastPressedButtonIndex < favoritebuttons.Count)
+                                    {
+                                        tooltipString = GetButtonTooltip(lastPressedButtonIndex);
+                                        tooltipText.text = tooltipString;
+                                        lastPressedButtonIndex = -1;
+                                    }
+                                    DestroyMenu();
+                                    instance.Draw();
+                                }
+                            }
+                        }
+                    }
+                }
+                if (!Mods.inSettings && !Mods.inPlayers && !Mods.inFavorite)
+                {
+                    int num = (buttons.Count + pageSize - 1) / pageSize;
+                    if (relatedText == "NextPage")
+                    {
+                        if (pageNumber < num - 1)
+                        {
+                            pageNumber++;
+                        }
+                        else
+                        {
+                            pageNumber = 0;
+                        }
+                        DestroyMenu();
+                        instance.Draw();
+                    }
+                    else
+                    {
+                        if (relatedText == "PreviousPage")
+                        {
+                            if (pageNumber > 0)
+                            {
+                                pageNumber--;
+                            }
+                            else
+                            {
+                                pageNumber = num - 1;
+                            }
+                            DestroyMenu();
+                            instance.Draw();
+                        }
+                        else
+                        {
+                            if (relatedText == "DisconnectingButton")
+                            {
+                                PhotonNetwork.Disconnect();
+                                GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, false, 0.25f);
+                            }
+
+                            else
+                            {
+                                int num2 = -1;
+                                for (int i = 0; i < buttons.Count; i++)
+                                {
+                                    if (relatedText == buttons[i].buttonText)
+                                    {
+                                        num2 = i;
+                                        break;
+                                    }
+                                }
+                                if (buttons[num2].enabled != null)
+                                {
+                                    buttons[num2].enabled = !buttons[num2].enabled;
+                                    lastPressedButtonIndex = num2;
+                                    if (lastPressedButtonIndex != -1 && lastPressedButtonIndex < buttons.Count)
+                                    {
+                                        tooltipString = GetButtonTooltip(lastPressedButtonIndex);
+                                        tooltipText.text = tooltipString;
+                                    }
+                                    DestroyMenu();
+                                    instance.Draw();
+                                }
                             }
                         }
                     }
@@ -839,6 +1670,7 @@ namespace ShibaGTTemplate.UI
         }
     }
 }
+
 
 internal class BtnCollider : MonoBehaviour
 {
